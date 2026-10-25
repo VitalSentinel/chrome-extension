@@ -1,0 +1,8 @@
+{
+  "extName": { "message": "VitalSentinel – SEO Extension" },
+  "extShortName": { "message": "VitalSentinel" },
+  "extDescription": {
+    "message": "See what holds any page back: on-page SEO, indexability, Core Web Vitals and technical checks in one click, right in your browser."
+  },
+  "cmdToggleJs": { "message": "Turn JavaScript on or off for this site" }
+}
