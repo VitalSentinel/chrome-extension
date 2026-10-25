@@ -1,0 +1,14 @@
+node_modules/
+.output/
+.wxt/
+dist/
+coverage/
+test-results/
+playwright-report/
+*.pem
+.keys/
+.env
+.env.*
+.DS_Store
+extension-dev
+.claude/worktrees/
