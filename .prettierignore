@@ -1,0 +1,6 @@
+.output
+.wxt
+node_modules
+public/_locales
+package-lock.json
+.claude/worktrees/

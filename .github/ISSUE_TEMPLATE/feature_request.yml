@@ -1,0 +1,32 @@
+name: Feature request
+description: Suggest a new check, report or improvement.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before you ask: the extension uses no Ahrefs data other than Domain Rating, sends usage statistics only as opt-in anonymous counters, and keeps the popup and the per-page content script small. See CONTRIBUTING.md › Scope.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do, and what gets in the way today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should the extension show or do? Where in the popup would it live?
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Data and privacy
+      description: Can it be computed from the page, its headers or files on the site? Would it need a request to another service, and what would that request send?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: Other tools or workarounds you use for this today.
