@@ -1,0 +1,142 @@
+@font-face {
+  font-family: 'Inter Variable';
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../assets/fonts/inter-latin-wght-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/space-grotesk-latin-700-normal.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Space Mono';
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/space-mono-latin-400-normal.woff2') format('woff2');
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* The app's light and dark tokens (frontend/src/app/globals.css). Dark follows the system. */
+:root {
+  --bg: 255 255 255;
+  --surface: 255 255 255;
+  --surface-inset: 250 250 249;
+  --hover: 243 244 246;
+  --border: 231 229 228;
+  --hairline: 240 239 238;
+  --track: 231 229 228;
+  --control: 135 130 126; /* 3:1+ against every surface: switch tracks, field borders */
+  --ink: 12 20 33;
+  --ink-2: 91 100 114;
+  --ink-3: 110 104 99; /* 4.5:1+ on every surface and tint */
+  --accent: 147 51 234;
+  --accent-hover: 126 34 206;
+  --accent-press: 107 33 168;
+  --accent-tint: 243 232 255;
+  --accent-text: 107 33 168;
+  --on-accent: 255 255 255;
+  --focus: 147 51 234;
+  --good: 22 163 74;
+  --good-text: 21 128 61;
+  --good-tint: 240 253 244;
+  --warn: 217 119 6;
+  --warn-text: 180 83 9;
+  --warn-tint: 255 251 235;
+  --poor: 220 38 38;
+  --poor-text: 185 28 28;
+  --poor-tint: 254 242 242;
+  --poor-solid: 220 38 38;
+  --pop: 12 20 33;
+  --on-pop: 242 244 247;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: 11 16 24;
+    --surface: 17 24 36;
+    --surface-inset: 22 30 43;
+    --hover: 34 45 63;
+    --border: 38 48 65;
+    --hairline: 28 37 51;
+    --track: 58 70 90;
+    --control: 104 117 138;
+    --ink: 242 244 247;
+    --ink-2: 169 177 190;
+    --ink-3: 146 155 168;
+    --accent-tint: 42 22 64;
+    --accent-text: 216 180 254;
+    --focus: 168 85 247;
+    --good: 34 197 94;
+    --good-text: 74 222 128;
+    --good-tint: 15 42 26;
+    --warn: 245 158 11;
+    --warn-text: 251 191 36;
+    --warn-tint: 45 33 8;
+    --poor: 239 68 68;
+    --poor-text: 248 113 113;
+    --poor-tint: 46 18 18;
+    --pop: 42 53 72;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  /* Chrome gives extension pages `body { font: 75% system-ui }`; take it back. */
+  html,
+  body {
+    @apply bg-ground font-sans text-sm text-ink antialiased;
+  }
+  :focus {
+    outline: none;
+  }
+  /* Keyboard focus only, drawn inside the element so scroll containers never clip it. */
+  :focus-visible {
+    outline: 2px solid rgb(var(--focus));
+    outline-offset: -2px;
+  }
+  a {
+    @apply text-accent-text hover:underline;
+  }
+  input[type='checkbox'] {
+    accent-color: rgb(var(--accent));
+  }
+}
+
+@layer components {
+  .mono {
+    @apply font-mono text-[11.5px];
+  }
+  .scroll-thin {
+    scrollbar-width: thin;
+  }
+  .skeleton {
+    border-radius: 9999px;
+    background: linear-gradient(
+        90deg,
+        rgb(var(--hover)) 0%,
+        rgb(var(--border)) 50%,
+        rgb(var(--hover)) 100%
+      )
+      0 0 / 200% 100%;
+    animation: skeleton 1.4s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      animation: none;
+    }
+  }
+  @keyframes skeleton {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: -100% 0;
+    }
+  }
+}
