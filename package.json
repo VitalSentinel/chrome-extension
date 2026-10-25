@@ -1,0 +1,50 @@
+{
+  "name": "vitalsentinel-extension",
+  "description": "VitalSentinel – SEO Extension",
+  "private": true,
+  "version": "1.0.8",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "dev:edge": "wxt -b edge",
+    "build": "wxt build",
+    "build:edge": "wxt build -b edge",
+    "zip": "wxt zip",
+    "crx": "node scripts/crx.mjs",
+    "icons": "node scripts/icons.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src tests",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "wxt build && playwright test",
+    "size": "node scripts/size.mjs",
+    "postinstall": "wxt prepare",
+    "build:local": "wxt build --mode development",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "axe-core": "4.14.0",
+    "preact": "11.0.2",
+    "web-vitals": "6.2.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@resvg/resvg-js": "^2.6.2",
+    "@testing-library/preact": "3.2.6",
+    "@types/node": "26.6.5",
+    "@vitest/coverage-v8": "5.0.5",
+    "autoprefixer": "10.6.1",
+    "happy-dom": "21.0.4",
+    "oxlint": "1.89.0",
+    "postcss": "8.5.31",
+    "prettier": "3.9.10",
+    "tailwindcss": "3.4.19",
+    "typescript": "7.0.2",
+    "vitest": "5.0.5",
+    "wxt": "0.21.4"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

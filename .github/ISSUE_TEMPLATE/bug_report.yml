@@ -1,0 +1,74 @@
+name: Bug report
+description: Something in the extension does not work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Please do not report security issues here – email security@vitalsentinel.com instead (see SECURITY.md).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open https://example.com/
+        2. Open the popup › Crawl and index › Indexability
+        3. …
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Public URL that shows the problem
+      description: Optional. Only share a URL you are happy to make public.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Overview
+        - On-page (Content, Structured data, Social tags, Images)
+        - Crawl and index (Indexability, Crawlers, Links)
+        - Performance
+        - Technical (HTTP headers, Tech and tracking, Accessibility, AI readiness)
+        - VitalSentinel tab or sign-in
+        - Toolbar badge or Domain Rating
+        - JavaScript switcher
+        - Settings
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Extension version
+      description: From chrome://extensions or edge://extensions.
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Chrome 142 on macOS 26
+    validations:
+      required: true
+  - type: dropdown
+    id: signed-in
+    attributes:
+      label: Signed in with VitalSentinel?
+      options:
+        - 'No'
+        - 'Yes'
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or console errors
+      description: Errors from the popup or service worker console help most (chrome://extensions › Inspect views).
