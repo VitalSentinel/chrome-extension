@@ -9,7 +9,13 @@ import {
   unwatchPage,
   watchPage,
 } from '../../../src/background/api';
-import { AuthError, isSignedIn, signIn, signOut } from '../../../src/background/auth';
+import {
+  AuthError,
+  isSignedIn,
+  onSessionLost,
+  signIn,
+  signOut,
+} from '../../../src/background/auth';
 import { paint } from '../../../src/background/badge';
 import { domainRating } from '../../../src/background/dr';
 import {
@@ -40,6 +46,7 @@ vi.mock('../../../src/background/api', () => ({
 vi.mock('../../../src/background/auth', async (orig) => ({
   AuthError: (await orig<typeof import('../../../src/background/auth')>()).AuthError,
   isSignedIn: vi.fn(),
+  onSessionLost: vi.fn(),
   signIn: vi.fn(),
   signOut: vi.fn(),
 }));
@@ -184,6 +191,10 @@ describe('main', () => {
     });
     expect(startNavigation).toHaveBeenCalledOnce();
     expect(sendDue).toHaveBeenCalledOnce();
+  });
+
+  it('has auth forget the cached account when a refresh ends the session', () => {
+    expect(onSessionLost).toHaveBeenCalledWith(forgetAccount);
   });
 
   it.each([

@@ -14,7 +14,7 @@ import {
   urlOverview,
   watchPage,
 } from '../background/api';
-import { AuthError, isSignedIn, signIn, signOut } from '../background/auth';
+import { AuthError, isSignedIn, onSessionLost, signIn, signOut } from '../background/auth';
 import { cwvRating, paint } from '../background/badge';
 import { domainRating, pruneDr } from '../background/dr';
 import { jsSetting, listRules, saveRules, setJs, toggleJs } from '../background/javascript';
@@ -158,6 +158,7 @@ const handlers: Handlers = {
 };
 
 export default defineBackground(() => {
+  onSessionLost(forgetAccount);
   startNavigation();
   void sendDue();
   void pruneDr();

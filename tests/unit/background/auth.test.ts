@@ -6,6 +6,7 @@ import {
   challengeFor,
   clearTokens,
   isSignedIn,
+  onSessionLost,
   randomString,
   signIn,
   signOut,
@@ -64,7 +65,10 @@ const okReply = (u: URL) => ({
 });
 
 beforeEach(() => fakeBrowser.reset());
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  onSessionLost(async () => {});
+});
 
 describe('PKCE helpers', () => {
   it('matches the RFC 7636 appendix B test vector', async () => {
@@ -315,6 +319,30 @@ describe('accessToken', () => {
       expect(await isSignedIn()).toBe(false);
     },
   );
+
+  it.each([400, 401])(
+    'forgets the cached account after the tokens when a refresh is rejected with %i',
+    async (status) => {
+      const lost = vi.fn(async () => {
+        // The tokens are already gone when the account is forgotten.
+        expect(await isSignedIn()).toBe(false);
+      });
+      onSessionLost(lost);
+      stubAuthServer(() => json({ error: 'invalid_grant' }, status));
+      await fakeBrowser.storage.local.set({ 'auth:refresh': 'rt-reused' });
+      expect(await accessToken()).toBeNull();
+      expect(lost).toHaveBeenCalledOnce();
+    },
+  );
+
+  it('keeps the cached account when a refresh fails for any other reason', async () => {
+    const lost = vi.fn(async () => {});
+    onSessionLost(lost);
+    stubAuthServer(() => json({}, 500));
+    await fakeBrowser.storage.local.set({ 'auth:refresh': 'rt-old' });
+    expect(await accessToken()).toBeNull();
+    expect(lost).not.toHaveBeenCalled();
+  });
 
   it.each([
     { status: 429, body: { error: 'slow_down' } },

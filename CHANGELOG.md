@@ -7,6 +7,11 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Fixed
+
+- Your cached name or e-mail, workspaces, roles, domains and page data are now deleted when the
+  VitalSentinel server rejects your session, as they already were on sign-out.
+
 ## [1.0.8] – 2026-10-25
 
 Initial release. One Manifest V3 build for Chrome and Edge.
