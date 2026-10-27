@@ -12,8 +12,6 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 ### Changed
 
 - The Terms screen asks again for the updated Terms and Privacy Policy.
-- The usage and error counts switch no longer says "anonymous".
-- The privacy notice matches the published Privacy Policy.
 
 ### Fixed
 
