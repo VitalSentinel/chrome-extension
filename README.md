@@ -59,7 +59,7 @@ group's pages.
   colouring, history controls, and opt-in usage statistics and error reports.
 
 **Toolbar badge** – shows the site's Domain Rating (Domain Rating by
-[Ahrefs](https://ahrefs.com/)) once you turn the lookup on. Grey while JavaScript is blocked.
+[Ahrefs](https://ahrefs.com/)) while the lookup is on (it starts on, on the Terms screen). Grey while JavaScript is blocked.
 Optionally coloured by the page's on-device
 Core Web Vitals.
 
@@ -76,7 +76,7 @@ What leaves the browser:
 - **The site you are viewing** – ordinary requests for raw HTML, robots.txt, sitemaps,
   llms.txt and link checks, when a report needs them. Link checks on request also reach the
   sites the page links to.
-- **VitalSentinel** – only after you turn on Domain Rating: the domain of the current tab, for
+- **VitalSentinel** – while Domain Rating is on (it starts on, on the Terms screen): the domain of the current tab, for
   the badge (about once a week per domain, cached locally). When you are signed in and
   the site is one you monitor: the full URL of the current tab.
 - **VitalSentinel, without an identifier** – once a day, counts of how often features were used and how

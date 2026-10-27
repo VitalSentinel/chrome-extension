@@ -33,7 +33,7 @@ Initial release. One Manifest V3 build for Chrome and Edge.
 - Anonymous usage statistics and error reports: once a day, counts of report views, feature
   use and failures from a fixed list, with the version, browser, build and UI language. No
   addresses, domains, results, messages or identifiers, sent without a token or cookies; never
-  in offline mode or incognito tabs. Off until you turn them on with one switch, on the Terms screen or in Settings.
+  in offline mode. Off until you turn them on with one switch, on the Terms screen or in Settings.
 - Overview: HTTP status, indexability verdict, title, description, canonical, H1, word count,
   language, Core Web Vitals and the page's main issues, each linking to its report.
 - Changed since your last visit: title, description, canonical, robots directives, H1, word
