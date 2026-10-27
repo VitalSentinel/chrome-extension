@@ -56,10 +56,10 @@ group's pages.
 - **JavaScript switcher** – allow or block JavaScript per site: per-host and per-domain rules,
   rule export, Alt+Shift+Q and a context menu entry.
 - **Settings** – your VitalSentinel account, Domain Rating lookup, offline mode, opt-in badge
-  colouring, history controls, and anonymous usage statistics and error reports.
+  colouring, history controls, and opt-in usage statistics and error reports.
 
 **Toolbar badge** – shows the site's Domain Rating (Domain Rating by
-[Ahrefs](https://ahrefs.com/)) once you turn the lookup on. Grey while JavaScript is blocked.
+[Ahrefs](https://ahrefs.com/)) while the lookup is on (it starts on, on the Terms screen). Grey while JavaScript is blocked.
 Optionally coloured by the page's on-device
 Core Web Vitals.
 
@@ -76,10 +76,10 @@ What leaves the browser:
 - **The site you are viewing** – ordinary requests for raw HTML, robots.txt, sitemaps,
   llms.txt and link checks, when a report needs them. Link checks on request also reach the
   sites the page links to.
-- **VitalSentinel** – only after you turn on Domain Rating: the domain of the current tab, for
-  the badge (at most once per domain per 7 days, cached locally). When you are signed in and
+- **VitalSentinel** – while Domain Rating is on (it starts on, on the Terms screen): the domain of the current tab, for
+  the badge (about once a week per domain, cached locally). When you are signed in and
   the site is one you monitor: the full URL of the current tab.
-- **VitalSentinel, anonymously** – once a day, counts of how often features were used and how
+- **VitalSentinel, without an identifier** – once a day, counts of how often features were used and how
   often something failed, with the version, browser and language. No addresses, domains,
   results or identifiers, and no token or cookies. Off until you turn them on with one
   switch, on the Terms screen or in Settings.

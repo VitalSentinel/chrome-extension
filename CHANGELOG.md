@@ -7,6 +7,21 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.0.9] – 2026-10-27
+
+### Changed
+
+- The Terms screen asks again for the updated Terms and Privacy Policy. Settings shows it
+  too, and nothing goes to VitalSentinel, sign-in included, until the Terms are accepted.
+- Offline mode loads no images, since one on the viewed site can redirect to another host.
+- Expired change history and cached VitalSentinel data are deleted when the extension starts,
+  not only when you next use them.
+
+### Fixed
+
+- Cached account data is now cleared when the session is rejected, as on sign-out.
+- A VitalSentinel error in an incognito tab is no longer counted.
+
 ## [1.0.8] – 2026-10-25
 
 Initial release. One Manifest V3 build for Chrome and Edge.
@@ -23,7 +38,7 @@ Initial release. One Manifest V3 build for Chrome and Edge.
 - Anonymous usage statistics and error reports: once a day, counts of report views, feature
   use and failures from a fixed list, with the version, browser, build and UI language. No
   addresses, domains, results, messages or identifiers, sent without a token or cookies; never
-  in offline mode or incognito tabs. Off until you turn them on with one switch, on the Terms screen or in Settings.
+  in offline mode. Off until you turn them on with one switch, on the Terms screen or in Settings.
 - Overview: HTTP status, indexability verdict, title, description, canonical, H1, word count,
   language, Core Web Vitals and the page's main issues, each linking to its report.
 - Changed since your last visit: title, description, canonical, robots directives, H1, word
@@ -108,5 +123,6 @@ Initial release. One Manifest V3 build for Chrome and Edge.
 - Performance › Show on page works on every tab, follows scrolling and sticky elements, and
   outlines each shifted element once.
 
-[Unreleased]: https://github.com/VitalSentinel/chrome-extension/compare/v1.0.8...HEAD
+[Unreleased]: https://github.com/VitalSentinel/chrome-extension/compare/v1.0.9...HEAD
+[1.0.9]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.9
 [1.0.8]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.8

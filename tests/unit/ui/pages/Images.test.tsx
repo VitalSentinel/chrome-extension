@@ -120,16 +120,15 @@ describe('Images', () => {
     expect(screen.queryByRole('group', { name: 'Filter images' })).toBeNull();
   });
 
-  it('loads no thumbnails from other hosts in offline mode', () => {
+  it("loads no thumbnails in offline mode, not even from the page's own host", () => {
     const cdn = image({ src: 'https://cdn.images.net/photo.webp', alt: 'CDN photo' });
     const { container } = renderPage(Images, {
       snap: pageSnap({ images: [cdn, ...pageSnap().images] }),
       settings: settingsFixture({ offline: true }),
     });
-    expect([...container.querySelectorAll('img')].map((i) => i.getAttribute('src'))).toEqual([
-      'https://www.example.com/img/chart.webp',
-    ]);
-    expect(screen.getByTitle('Not loaded in offline mode')).toBeTruthy();
+    // An image on the page's own host can redirect to another one.
+    expect(container.querySelectorAll('img')).toHaveLength(0);
+    expect(screen.getAllByTitle('Not loaded in offline mode')).toHaveLength(2);
     expect(screen.getByRole('link', { name: 'https://cdn.images.net/photo.webp' })).toBeTruthy();
   });
 });

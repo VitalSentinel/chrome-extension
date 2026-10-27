@@ -21,7 +21,7 @@ beforeEach(() => {
 afterEach(cleanup);
 
 const DR = 'Domain Rating on the icon';
-const STATS = 'Share anonymous usage and error counts';
+const STATS = 'Share usage and error counts';
 const toggle = (name: string) => screen.getByRole('switch', { name });
 const on = (name: string) => toggle(name).getAttribute('aria-checked') === 'true';
 const agree = () => fireEvent.click(screen.getByRole('button', { name: 'Agree and continue' }));

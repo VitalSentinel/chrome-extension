@@ -6,12 +6,13 @@ import {
   domains,
   forgetAccount,
   unwrap,
+  pruneOverviews,
   urlOverview,
   unwatchPage,
   watchPage,
 } from '../../../src/background/api';
 import type { Domain, Page, UrlOverview, Workspace } from '../../../src/lib/app';
-import { API_PREFIX, API_URL, OVERVIEW_TTL_MS } from '../../../src/lib/config';
+import { API_PREFIX, API_URL, OVERVIEW_TTL_MS, TERMS_VERSION } from '../../../src/lib/config';
 import { SETTINGS_KEY } from '../../../src/lib/settings';
 import { calls, json, stubFetch } from './helpers';
 
@@ -37,6 +38,7 @@ beforeEach(async () => {
   fakeBrowser.reset();
   vi.clearAllMocks();
   await forgetAccount();
+  await fakeBrowser.storage.local.set({ [SETTINGS_KEY]: { termsAccepted: TERMS_VERSION } });
   vi.mocked(isSignedIn).mockResolvedValue(true);
   vi.mocked(accessToken).mockImplementation(async (force?: boolean) =>
     force ? 'at-refreshed' : 'at-1',
@@ -82,6 +84,17 @@ describe('calls to the API', () => {
       ok: false,
       status: 0,
       error: 'offline',
+    });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('makes no request before the Terms in force are accepted', async () => {
+    await fakeBrowser.storage.local.set({ [SETTINGS_KEY]: { termsAccepted: '2000-01-01' } });
+    const fetchMock = stubFetch(() => json({}));
+    expect(await urlOverview('dom_1', 'https://www.example.com/')).toEqual({
+      ok: false,
+      status: 0,
+      error: 'terms',
     });
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -496,5 +509,21 @@ describe('forgetAccount', () => {
     expect(Object.keys(await fakeBrowser.storage.session.get(null))).toEqual(['nav:1']);
     await urlOverview('dom_1', 'https://www.example.com/');
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('pruneOverviews', () => {
+  it('deletes page data past its hour and keeps the rest', async () => {
+    const now = 10 * OVERVIEW_TTL_MS;
+    await fakeBrowser.storage.session.set({
+      'app:overview:dom_1:old': { at: now - OVERVIEW_TTL_MS, data: overview },
+      'app:overview:dom_1:new': { at: now - 1, data: overview },
+      'vitals:7': { url: 'x' },
+    });
+    await pruneOverviews(now);
+    expect(Object.keys(await fakeBrowser.storage.session.get(null)).sort()).toEqual([
+      'app:overview:dom_1:new',
+      'vitals:7',
+    ]);
   });
 });

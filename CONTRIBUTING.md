@@ -21,7 +21,7 @@ Some things the extension deliberately does not do. Please check before proposin
 
 - **Ahrefs data other than Domain Rating** (URL Rating, backlinks, keywords, traffic and the
   like). Domain Rating is the only Ahrefs data the extension will use.
-- **Tracking of users**: usage statistics stay opt-in anonymous counters from a fixed list, and
+- **Tracking of users**: usage statistics stay opt-in counters without any identifier from a fixed list, and
   no new request may send browsing data off the device without a clear user benefit. See [PRIVACY.md](PRIVACY.md).
 - **Heavy dependencies in the popup or content script.** The popup must open instantly and the
   content script runs on every page.

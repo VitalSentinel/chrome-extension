@@ -5,8 +5,9 @@ it sends, to whom and when. It covers version 1.x. If a change to the extension 
 anything below, this document changes in the same release and the change is listed in the
 [CHANGELOG](CHANGELOG.md).
 
-Last updated: October 25, 2026. Changes are announced in the CHANGELOG and, if they change what
-leaves your browser, on the Terms screen before the next report.
+Last updated: October 27, 2026. Changes are announced in the CHANGELOG. When the Terms or the
+Privacy Policy change, the Terms screen asks you to accept them again before the next Domain
+Rating lookup or report.
 
 ## Principle
 
@@ -16,22 +17,22 @@ robots.txt, sitemaps and raw HTML straight from the site. No VitalSentinel serve
 you and the page.
 
 VitalSentinel's servers are called only for Domain Rating (while it is on), the monitoring
-data of a signed-in user's own sites, sign-in itself, and the anonymous daily report of usage
-and error counts (only if you turn them on).
+data of a signed-in user's own sites, sign-in itself, and the daily report of usage
+and error counts, without an identifier (only if you turn them on).
 
 ## What leaves the browser
 
-| Recipient                                             | What                                                                                                                                                                                                                                                                                    | When                                                                                                                                                                                                                              |
-| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The site being viewed                                 | Ordinary requests for raw HTML, robots.txt, sitemaps, llms.txt, link status checks and its favicon (for the Google snippet preview, not in offline mode)                                                                                                                                | When you open a report that needs them                                                                                                                                                                                            |
-| Hosts named in the site's robots.txt or sitemap index | Ordinary requests for those sitemap files (often on the site's CDN); never local network names                                                                                                                                                                                          | When a report checks whether the page is in a sitemap (only the viewed host in offline mode)                                                                                                                                      |
-| Sites the page links to                               | A `HEAD` request per link (a `GET` when the server refuses `HEAD` with 400, 403, 405 or 501 or drops it; only the status is read, not the body)                                                                                                                                         | Only when you click "Check status" on the Links report (only links on the same host in offline mode)                                                                                                                              |
-| Hosts of the page's images                            | An ordinary image request for each thumbnail and the `og:image`, without a referrer                                                                                                                                                                                                     | When the Images or Social tags report is open (only images on the same host in offline mode)                                                                                                                                      |
-| VitalSentinel app                                     | Domain of the current tab (`blog.example.co.uk` is sent as `example.co.uk`), never the full URL                                                                                                                                                                                         | Only after you accept the Terms with Domain Rating on (its switch on the Terms screen starts on); never for incognito tabs or private network names; at most once per domain per 7 days (cached locally); without a sign-in token |
-| VitalSentinel app (signed in)                         | Requests for your name or e-mail, workspaces and roles, and your domain list                                                                                                                                                                                                            | Hourly at most (cached locally)                                                                                                                                                                                                   |
-| VitalSentinel app (signed in)                         | Full URL of the current tab, without its hash and tracking parameters (`utm_*`, `gclid`, `fbclid` and similar), to load its last 90 days of Google Search Console, Google index, CrUX and Web Analytics data, or to watch it; "Stop watching" sends only the watch ID                   | Only when the host matches one of your monitored domains; at most once an hour per page (cached for the browser session), or again when you click Refresh                                                                         |
-| VitalSentinel app (anonymous report)                  | Daily counters from a fixed list, the extension version, Chrome or Edge, production or development build, UI language, signed in yes/no and four settings as on/off – no token, no cookies, no identifier (see [Usage statistics and error counts](#usage-statistics-and-error-counts)) | Once a day for the days before today, only after you turn them on (both off by default); never in offline mode                                                                                                                    |
-| Ahrefs (from the app, not the browser)                | Domain                                                                                                                                                                                                                                                                                  | On a Domain Rating cache miss in the app                                                                                                                                                                                          |
+| Recipient                                             | What                                                                                                                                                                                                                                                                                    | When                                                                                                                                                                                                                                                                             |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The site being viewed                                 | Ordinary requests for raw HTML, robots.txt, sitemaps, llms.txt, link status checks and its favicon (for the Google snippet preview, not in offline mode)                                                                                                                                | When you open a report that needs them                                                                                                                                                                                                                                           |
+| Hosts named in the site's robots.txt or sitemap index | Ordinary requests for those sitemap files (often on the site's CDN); never local network names                                                                                                                                                                                          | When a report checks whether the page is in a sitemap (only the viewed host in offline mode)                                                                                                                                                                                     |
+| Sites the page links to                               | A `HEAD` request per link (a `GET` when the server refuses `HEAD` with 400, 403, 405 or 501 or drops it; only the status is read, not the body)                                                                                                                                         | Only when you click "Check status" on the Links report (only links on the same host in offline mode)                                                                                                                                                                             |
+| Hosts of the page's images                            | An ordinary image request for each thumbnail and the `og:image`, without a referrer                                                                                                                                                                                                     | When the Images or Social tags report is open (never in offline mode)                                                                                                                                                                                                            |
+| VitalSentinel app                                     | Domain of the current tab (`blog.example.co.uk` is sent as `example.co.uk`), never the full URL                                                                                                                                                                                         | Only after you accept the Terms with Domain Rating on (its switch on the Terms screen starts on); never for incognito tabs or private network names; about once a week per domain (cached locally for 7 days; a failed lookup is retried after an hour); without a sign-in token |
+| VitalSentinel app (signed in)                         | Requests for your name or e-mail, workspaces and roles, and your domain list                                                                                                                                                                                                            | Hourly at most (cached locally)                                                                                                                                                                                                                                                  |
+| VitalSentinel app (signed in)                         | Full URL of the current tab, without its hash and tracking parameters (`utm_*`, `gclid`, `fbclid` and similar), to load its last 90 days of Google Search Console, Google index, CrUX and Web Analytics data, or to watch it; "Stop watching" sends only the watch ID                   | Only when the host matches one of your monitored domains; at most once an hour per page (cached for the browser session), or again when you click Refresh                                                                                                                        |
+| VitalSentinel app (usage report)                      | Daily counters from a fixed list, the extension version, Chrome or Edge, production or development build, UI language, signed in yes/no and four settings as on/off – no token, no cookies, no identifier (see [Usage statistics and error counts](#usage-statistics-and-error-counts)) | Once a day for the days before today, only after you turn them on (both off by default); never in offline mode                                                                                                                                                                   |
+| Ahrefs (from the app, not the browser)                | Domain                                                                                                                                                                                                                                                                                  | On a Domain Rating cache miss in the app                                                                                                                                                                                                                                         |
 
 Links you click (Rich Results Test, Schema.org validator, PageSpeed Insights, "Start
 monitoring") open those sites with the page address or host in the link, as any link would.
@@ -50,12 +51,15 @@ Nothing else is sent. In particular:
 
 The first time you open the popup, it shows the Terms screen instead of a report. It asks you
 to accept the VitalSentinel [Terms and Conditions](https://www.vitalsentinel.com/terms-and-conditions)
-and to confirm you have read the [Privacy Policy](https://www.vitalsentinel.com/privacy-policy).
-Until you do, nothing is looked up, counted or reported. A new version of the Terms asks again.
+and to confirm you have read the [Privacy Policy](https://www.vitalsentinel.com/privacy-policy#browser-extension).
+Until you do, nothing is sent to VitalSentinel: no Domain Rating lookup, no sign-in (Settings
+shows the same Terms screen) and no report, and nothing is counted. The extension keeps only the per-tab navigation record described under
+[What is stored in the browser](#what-is-stored-in-the-browser). A new version of the Terms asks
+again.
 
 - **Domain Rating** – a switch, on to start with, that says the domain of each site you visit
   goes to VitalSentinel, which looks it up with Ahrefs. Turn it off and no lookup is ever made.
-- **Anonymous usage statistics and error counts** need your consent – one switch for both,
+- **Usage statistics and error counts** need your consent – one switch for both,
   off until you turn it on, on the Terms screen or in Settings.
 
 Accepting a newer version of the Terms keeps your choices.
@@ -97,8 +101,7 @@ Reports are rate-limited with counters in Redis keyed by a daily-salted hash of 
 which expire within a day. A report that cannot be sent is retried an hour later and deleted
 after 7 days.
 
-Like every request to vitalsentinel.com, report requests pass through Cloudflare and appear in
-the web servers' access logs (IP address, browser and request line), kept for up to 60 days for
+Report requests appear in our web servers' access logs (IP address, browser and request line), kept for up to 60 days for
 security, as the [Privacy Policy](https://www.vitalsentinel.com/privacy-policy) describes.
 Nothing from them is stored with your IP address in our databases.
 
@@ -117,15 +120,15 @@ address with the Domain Rating data:
 - It stores only the DR row for the domain (domain, score, when it was fetched) and one
   lookup count per domain, used to decide which stale rows refresh first, plus daily totals of
   lookups kept for 12 months – never who asked.
-- Lookups are rate-limited per IP address with hourly and daily counters in Redis that expire
+- Lookups are rate-limited with hourly and daily counters in Redis, keyed by a daily-salted hash
+  of the IP address rather than the address itself, that expire
   after an hour or a day.
-- Like every other request to vitalsentinel.com, lookups pass through Cloudflare and appear in
-  the web servers' access logs (IP address, browser and request line, which includes the
+- Lookups appear in our web servers' access logs (IP address, browser and request line, which includes the
   domain), kept for up to 60 days for security. Nothing from them is stored with your IP
   address in our databases.
 
 The extension caches each domain's DR locally for 7 days, so a domain you visit often is
-looked up at most once a week. Older entries are deleted, and turning off the lookup or the
+looked up about once a week (a failed lookup is retried after an hour). Older entries are deleted, and turning off the lookup or the
 badge deletes all of them. Private network names (`.lan`, `.corp`, `.internal`, `.home.arpa`
 and similar), IP addresses and `localhost` are never looked up.
 
@@ -144,7 +147,9 @@ VitalSentinel site, not in the extension.
   only the service worker calls the app. The extension's local storage is closed to content
   scripts.
 - Signing out revokes the token with the app and clears both. You can also revoke the
-  extension in the app under connected apps.
+  extension in the app under connected apps; uninstalling does not revoke it.
+- Each signed-in request is recorded, without the page address, in your workspace's API request
+  log for 90 days, which the workspace's owners and admins can see.
 
 When signed in, the extension fetches your list of monitored domains and compares the current
 host with it locally. The full URL of the current tab is sent only when the host matches one
@@ -156,25 +161,26 @@ and Web Analytics data or to add it to page monitoring when you choose "Watch th
 
 Settings include an **Offline mode** switch. With it on, the extension makes no request except
 to the host being viewed (the exact host, not other subdomains): no Domain Rating, no
-VitalSentinel data, no sign-in or sign-out request and no usage report. Nothing
+VitalSentinel data, no sign-in or sign-out request, no usage report and no images, since even
+an image on the viewed host can redirect elsewhere. Nothing
 is counted while it is on, and counters not sent yet are deleted when you turn it on.
 
 ## What is stored in the browser
 
 All of this stays on your device, in the extension's own storage:
 
-| Data                                                                                                                                                                                                  | Where                    | How long                                                                                                        |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| Navigation record per tab: status, response headers (cookie values removed) and redirect hops of the page itself, and the Core Web Vitals measured for that page load                                 | `chrome.storage.session` | Replaced on the next navigation in the tab; cleared when the browser closes                                     |
-| Last report page open per tab, with the page address it was for, so the popup reopens there                                                                                                           | `chrome.storage.session` | Until the tab closes or the browser closes                                                                      |
-| Settings (including the Terms version you accepted) and JavaScript rules                                                                                                                              | `chrome.storage.local`   | Until you change or remove them, or uninstall                                                                   |
-| Domain Rating cache per registrable domain                                                                                                                                                            | `chrome.storage.local`   | 7 days; all deleted when the lookup or badge is turned off                                                      |
-| Signed in: your name or e-mail, workspaces and roles, monitored domains; when loading them failed, the time it failed                                                                                 | `chrome.storage.local`   | 1 hour; deleted on sign-in and sign-out                                                                         |
-| Signed in: a monitored page's VitalSentinel data (Google Search Console, Google index, CrUX and Web Analytics for the last 90 days)                                                                   | `chrome.storage.session` | 1 hour, at most 50 pages; deleted on sign-in and sign-out and when the browser closes                           |
-| Usage and error counters per day (names and numbers only) and the time of the last report attempt                                                                                                     | `chrome.storage.local`   | Until sent the next day; at most 7 days                                                                         |
-| Access token                                                                                                                                                                                          | `chrome.storage.session` | 60 minutes, or until sign-out or the browser closes                                                             |
-| Refresh token                                                                                                                                                                                         | `chrome.storage.local`   | Until it is used, revoked or you sign out                                                                       |
-| "Changed since your last visit" snapshots per URL (status, title, description, canonical, robots, H1, word count, schema types, hreflang and link counts) and an index of those URLs with their dates | `chrome.storage.local`   | Pruned to 30 days and 2,000 URLs whenever a page is analysed; deleted when you turn the history off or clear it |
+| Data                                                                                                                                                                                                  | Where                    | How long                                                                                                                                                                   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Navigation record per tab: status, response headers (cookie values removed) and redirect hops of the page itself, and the Core Web Vitals measured for that page load                                 | `chrome.storage.session` | Replaced on the next navigation in the tab; cleared when the browser closes                                                                                                |
+| Last report page open per tab, with the page address it was for, so the popup reopens there                                                                                                           | `chrome.storage.session` | Until the tab closes or the browser closes                                                                                                                                 |
+| Settings (including the Terms version you accepted) and JavaScript rules                                                                                                                              | `chrome.storage.local`   | Until you change or remove them, or uninstall                                                                                                                              |
+| Domain Rating cache per registrable domain                                                                                                                                                            | `chrome.storage.local`   | 7 days; all deleted when the lookup or badge is turned off                                                                                                                 |
+| Signed in: your name or e-mail, workspaces and roles, monitored domains; when loading them failed, the time it failed                                                                                 | `chrome.storage.local`   | Refreshed hourly; deleted on sign-in, sign-out and when the server rejects your session                                                                                    |
+| Signed in: a monitored page's VitalSentinel data (Google Search Console, Google index, CrUX and Web Analytics for the last 90 days)                                                                   | `chrome.storage.session` | 1 hour (expired ones are deleted when the worker starts), at most 50 pages; deleted on sign-in, sign-out, when the server rejects your session and when the browser closes |
+| Usage and error counters per day (names and numbers only) and the time of the last report attempt                                                                                                     | `chrome.storage.local`   | Until sent the next day; at most 7 days                                                                                                                                    |
+| Access token                                                                                                                                                                                          | `chrome.storage.session` | 60 minutes, or until sign-out or the browser closes                                                                                                                        |
+| Refresh token                                                                                                                                                                                         | `chrome.storage.local`   | Until it is used, revoked or you sign out                                                                                                                                  |
+| "Changed since your last visit" snapshots per URL (status, title, description, canonical, robots, H1, word count, schema types, hreflang and link counts) and an index of those URLs with their dates | `chrome.storage.local`   | Pruned to 30 days and 2,000 URLs when a page is analysed and when the worker starts; deleted when you turn the history off or clear it                                     |
 
 Uninstalling the extension deletes all of it.
 
@@ -189,7 +195,7 @@ fetches must work on any site. Each permission and its use is listed in
 | Processing                               | Legal basis (GDPR)                                                                                     |
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | Usage statistics and error counts        | Your consent (art. 6(1)(a); § 109(8) of the Slovak Act 452/2021; § 25(1) TDDDG), withdrawn in Settings |
-| Domain Rating lookups                    | Providing the feature you keep on (art. 6(1)(b)); answer No or turn it off in Settings                 |
+| Domain Rating lookups                    | Providing the feature you keep on (art. 6(1)(b)); switch it off on the Terms screen or in Settings     |
 | Monitoring data while signed in          | Our contract with you (art. 6(1)(b))                                                                   |
 | Rate limiting by IP address, access logs | Our legitimate interest in preventing abuse and keeping the service secure (art. 6(1)(f))              |
 
@@ -197,9 +203,7 @@ Recipients:
 
 - **Ahrefs Pte. Ltd.** (Singapore) receives only a domain name from our server, never your IP
   address or any identifier.
-- **Contabo** (hosting, EU) and **Cloudflare** (content delivery and security; EU-U.S. Data
-  Privacy Framework or Standard Contractual Clauses) process requests to VitalSentinel on our
-  behalf.
+- **Contabo** (hosting, EU) processes requests to VitalSentinel on our behalf.
 
 No decision about you is made automatically.
 

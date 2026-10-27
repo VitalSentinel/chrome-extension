@@ -98,6 +98,15 @@ async function store(tokens: TokenResponse) {
   } satisfies AccessToken);
 }
 
+// api.ts imports this module, so it registers what to forget (the cached account) through
+// onSessionLost instead of auth.ts importing it back.
+let sessionLost: () => Promise<void> = async () => {};
+
+/** Registers what runs once a rejected refresh has ended the session. */
+export function onSessionLost(fn: () => Promise<void>) {
+  sessionLost = fn;
+}
+
 export async function clearTokens() {
   await browser.storage.session.remove(ACCESS);
   await browser.storage.local.remove(REFRESH);
@@ -168,7 +177,10 @@ async function refresh(): Promise<string | null> {
   } catch (e) {
     // Only a rejected refresh token (reused, revoked or expired: 400/401) ends the session;
     // a server error, rate limit or timeout keeps it for the next try.
-    if (e instanceof AuthError && (e.status === 400 || e.status === 401)) await clearTokens();
+    if (e instanceof AuthError && (e.status === 400 || e.status === 401)) {
+      await clearTokens();
+      await sessionLost();
+    }
     return null;
   }
 }

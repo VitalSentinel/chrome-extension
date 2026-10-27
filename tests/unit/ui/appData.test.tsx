@@ -36,7 +36,11 @@ describe('useAppOverview', () => {
     const send = mockSend({ 'app:overview': () => ({ ok: true, data: base }) });
     const { rerender } = render(<Probe />);
     expect(await screen.findByText('loaded')).toBeTruthy();
-    expect(send).toHaveBeenCalledWith('app:overview', { domainId: 'dom1', url: PAGE_URL });
+    expect(send).toHaveBeenCalledWith('app:overview', {
+      domainId: 'dom1',
+      url: PAGE_URL,
+      incognito: false,
+    });
     rerender(<Probe reload={1} />);
     await waitFor(() => expect(send).toHaveBeenCalledTimes(2));
     expect(send.mock.calls.every(([, req]) => !('refresh' in (req as object)))).toBe(true);

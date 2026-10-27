@@ -43,7 +43,7 @@ analyser that is injected into the tab only when the popup opens.
 | JavaScript rule and icon state                                                                         | Link status checks (HEAD, 6 at a time)                                                                 |
 | Signed in: monitored-site match (cached domain list)                                                   | VitalSentinel url-overview for monitored sites (90 days of Search Console, index, CrUX, Web Analytics) |
 | Opt-in badge colouring from the on-device Core Web Vitals (no request)                                 | axe-core, the LCP and layout-shift overlay, the resource audit                                         |
-| Anonymous usage and error counters, and the daily report of the days before today                      |                                                                                                        |
+| Usage and error counters (no identifier), and the daily report of the days before today                |                                                                                                        |
 
 ## Parts
 
@@ -116,8 +116,8 @@ extension beyond the client side of that flow.
    (90 days, single-use, rotating) to `chrome.storage.local`.
 5. Every app call carries `Authorization: Bearer` and goes to `/api/public/v1`. A 401 triggers
    one refresh. Refreshes are never run concurrently: parallel callers wait for the one
-   refresh in flight, because a rotating token used twice is revoked. A failed refresh clears
-   both tokens and shows the signed-out state.
+   refresh in flight, because a rotating token used twice is revoked. A refresh rejected with 400 or 401
+   clears both tokens and the cached account and shows the signed-out state.
 6. Sign-out calls `POST /oauth/revoke` and clears storage.
 
 Scopes are read-only except `write:pages`, which "Watch this page" and "Stop watching" need. The
@@ -130,13 +130,13 @@ the development build pins with the manifest `key` (see [DEVELOPMENT.md](DEVELOP
 
 ## Domain Rating
 
-Domain Rating is fetched from the app's `GET /api/public/v1/domain-rating?target=<host>`. The
+Domain Rating is fetched from the app's `GET /api/public/v1/domain-rating?target=<registrable domain>`. The
 app normalises the target to the registrable domain, serves it from its own 7-day cache and
 calls Ahrefs only on a miss. The extension never talks to Ahrefs and never holds an Ahrefs key.
 
 - The extension caches DR per domain for 7 days in `chrome.storage.local`.
-- Anonymous calls are rate-limited per IP by the app; with a token they use the account's
-  normal limits. Either way they cost 0 API credits.
+- Calls never carry a token. The app rate-limits them by a daily-salted hash of the IP address,
+  and they cost 0 API credits.
 - A stale value (`stale: true`) is shown as is; a 503 shows "DR unavailable".
 - Every DR value carries the credit "Domain Rating by Ahrefs": in the icon tooltip and at the
   foot of the popup sidebar.

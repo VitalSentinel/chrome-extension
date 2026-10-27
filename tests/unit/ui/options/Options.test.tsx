@@ -67,6 +67,14 @@ describe('Options', () => {
         .map((a) => a.getAttribute('href')),
     ).toEqual(['#account', '#js', '#icon', '#privacy', '#keys']);
   });
+
+  it('shows the Terms screen instead of the settings until the Terms in force are accepted', async () => {
+    stored = settingsFixture({ termsAccepted: '' });
+    render(<Options />);
+    await screen.findByRole('button', { name: 'Agree and continue' });
+    expect(screen.queryByRole('heading', { level: 1, name: 'Settings' })).toBeNull();
+    expect(screen.queryByRole('button', { name: /sign in/i })).toBeNull();
+  });
 });
 
 describe('JavaScript rules', () => {
@@ -413,7 +421,7 @@ describe('copy', () => {
 
   it('turns usage statistics and error reports on and off with one switch', async () => {
     await renderOptions();
-    const sw = screen.getByRole('switch', { name: 'Share anonymous usage and error counts' });
+    const sw = screen.getByRole('switch', { name: 'Share usage and error counts' });
     expect(sw.getAttribute('aria-checked')).toBe('false');
     fireEvent.click(sw);
     await waitFor(() =>

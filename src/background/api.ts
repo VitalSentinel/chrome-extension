@@ -1,5 +1,5 @@
 import type { Domain, Me, Page, UrlOverview, WatchCreated, Workspace } from '../lib/app';
-import { API_PREFIX, API_URL, DOMAINS_TTL_MS, OVERVIEW_TTL_MS } from '../lib/config';
+import { API_PREFIX, API_URL, DOMAINS_TTL_MS, OVERVIEW_TTL_MS, TERMS_VERSION } from '../lib/config';
 import type { ApiResult, AuthState } from '../lib/messages';
 import { withoutTracking } from '../lib/url';
 import { accessToken, isSignedIn } from './auth';
@@ -41,7 +41,10 @@ async function call<T>(
   init: RequestInit = {},
   retried = false,
 ): Promise<ApiResult<T>> {
-  if ((await getSettings()).offline) return { ok: false, status: 0, error: 'offline' };
+  const settings = await getSettings();
+  if (settings.offline) return { ok: false, status: 0, error: 'offline' };
+  // Nothing goes to the app until the Terms in force are accepted (Privacy Policy 6.3).
+  if (settings.termsAccepted !== TERMS_VERSION) return { ok: false, status: 0, error: 'terms' };
   const token = await accessToken(retried);
   if (!token) return { ok: false, status: 401, error: 'signed_out' };
   let res: Response;
@@ -148,6 +151,15 @@ const overviewKey = (domainId: string, url: string) => `${OVERVIEW}${domainId}:$
 // Bumped per domain when a page is watched or unwatched: an answer asked for before that
 // carries the old watch state, so it is not cached. The app drops its own cache of the URL.
 const watchChanges = new Map<string, number>();
+
+/** Deletes page data older than its hour, so it is not kept until the browser closes. */
+export async function pruneOverviews(now = Date.now()): Promise<void> {
+  const all = await browser.storage.session.get(await overviewKeys());
+  const stale = Object.entries(all)
+    .filter(([, v]) => now - ((v as { at?: number } | undefined)?.at ?? 0) >= OVERVIEW_TTL_MS)
+    .map(([k]) => k);
+  if (stale.length) await browser.storage.session.remove(stale);
+}
 
 async function overviewKeys(): Promise<string[]> {
   return Object.keys(await browser.storage.session.get(null)).filter((k) => k.startsWith(OVERVIEW));

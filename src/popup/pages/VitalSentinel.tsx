@@ -322,6 +322,7 @@ export default function VitalSentinel({ ctx, reload, go }: PageProps) {
         domainId: monitored!.id,
         url: ctx.url,
         refresh: true,
+        incognito: ctx.incognito,
       });
       if (!r.ok) setRefreshError(appError(r.status, r.error));
     } catch {

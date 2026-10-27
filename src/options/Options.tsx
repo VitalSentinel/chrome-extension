@@ -10,7 +10,8 @@ import logo from '../assets/logo.svg';
 import logoDark from '../assets/logo-dark.svg';
 import { saveSettings, settings as loadSettings, track } from '../popup/data';
 import { Hero, ON_HERO_PRIMARY, ON_HERO_SECONDARY } from '../popup/Promo';
-import { APP_URL } from '../lib/config';
+import { APP_URL, TERMS_VERSION } from '../lib/config';
+import { Onboarding } from '../popup/Agreement';
 import { accountLabel } from '../lib/app';
 
 const SIGN_UP = `${APP_URL}/register?utm_source=extension&utm_medium=settings`;
@@ -403,6 +404,13 @@ export function Options() {
     await send('badge:refresh', {});
   };
   if (!s) return null;
+  // Settings (sign-in included) only after the Terms in force are accepted, as in the popup.
+  if (s.termsAccepted !== TERMS_VERSION)
+    return (
+      <div class="mx-auto max-w-[700px] px-10 py-12">
+        <Onboarding settings={s} onAgree={setS} />
+      </div>
+    );
 
   // The same keys "Clear history" removes; switching the history off removes them too.
   const clearHistory = async () => {
@@ -548,14 +556,14 @@ export function Options() {
               />
             </Row>
             <Row
-              label="Share anonymous usage and error counts"
+              label="Share usage and error counts"
               hint="Once a day, which features you use and how often something fails, so we can fix bugs and improve features. Never the pages you visit."
             >
               <Switch
                 large
                 checked={s.usageStats || s.errorReports}
                 onChange={(v) => set({ usageStats: v, errorReports: v })}
-                label="Share anonymous usage and error counts"
+                label="Share usage and error counts"
               />
             </Row>
           </Card>

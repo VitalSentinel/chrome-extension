@@ -86,7 +86,7 @@ describe('Social tags', () => {
     expect(screen.getByText('The image could not be loaded')).toBeTruthy();
   });
 
-  it('shows no preview image from another host in offline mode', () => {
+  it("shows no preview image in offline mode, not even from the page's own host", () => {
     const cdn = pageSnap({
       meta: meta({ 'og:image': 'https://cdn.images.net/og.png', 'og:title': 'T' }),
     });
@@ -98,7 +98,8 @@ describe('Social tags', () => {
     expect(screen.getAllByText('Not loaded in offline mode')).toHaveLength(1);
     unmount();
 
+    // An image on the page's own host can redirect to another one.
     const { container: own } = renderPage(Social, { settings: settingsFixture({ offline: true }) });
-    expect(own.querySelectorAll('img')).toHaveLength(2);
+    expect(own.querySelectorAll('img')).toHaveLength(0);
   });
 });

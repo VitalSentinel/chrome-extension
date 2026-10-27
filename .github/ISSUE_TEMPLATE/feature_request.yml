@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before you ask: the extension uses no Ahrefs data other than Domain Rating, sends usage statistics only as opt-in anonymous counters, and keeps the popup and the per-page content script small. See CONTRIBUTING.md › Scope.
+        Before you ask: the extension uses no Ahrefs data other than Domain Rating, sends usage statistics only as opt-in counters without any identifier, and keeps the popup and the per-page content script small. See CONTRIBUTING.md › Scope.
   - type: textarea
     id: problem
     attributes:

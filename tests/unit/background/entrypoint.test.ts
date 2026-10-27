@@ -9,7 +9,13 @@ import {
   unwatchPage,
   watchPage,
 } from '../../../src/background/api';
-import { AuthError, isSignedIn, signIn, signOut } from '../../../src/background/auth';
+import {
+  AuthError,
+  isSignedIn,
+  onSessionLost,
+  signIn,
+  signOut,
+} from '../../../src/background/auth';
 import { paint } from '../../../src/background/badge';
 import { domainRating } from '../../../src/background/dr';
 import {
@@ -23,6 +29,7 @@ import { getNav, startNavigation } from '../../../src/background/navigation';
 import { count, pruneUsage, sendDue } from '../../../src/background/usage';
 import type { Domain } from '../../../src/lib/app';
 import type { AuthState, Message } from '../../../src/lib/messages';
+import { TERMS_VERSION } from '../../../src/lib/config';
 import { SETTINGS_KEY, type Settings } from '../../../src/lib/settings';
 import type { TabVitals } from '../../../src/lib/types';
 import { nav } from '../fixtures';
@@ -33,6 +40,7 @@ vi.mock('../../../src/background/api', () => ({
   authState: vi.fn(),
   domains: vi.fn(),
   forgetAccount: vi.fn(),
+  pruneOverviews: vi.fn(async () => {}),
   unwatchPage: vi.fn(),
   urlOverview: vi.fn(),
   watchPage: vi.fn(),
@@ -40,6 +48,7 @@ vi.mock('../../../src/background/api', () => ({
 vi.mock('../../../src/background/auth', async (orig) => ({
   AuthError: (await orig<typeof import('../../../src/background/auth')>()).AuthError,
   isSignedIn: vi.fn(),
+  onSessionLost: vi.fn(),
   signIn: vi.fn(),
   signOut: vi.fn(),
 }));
@@ -125,7 +134,7 @@ function dispatch(
 }
 
 const setSettings = async (s: Partial<Settings>) => {
-  await fakeBrowser.storage.local.set({ [SETTINGS_KEY]: s });
+  await fakeBrowser.storage.local.set({ [SETTINGS_KEY]: { termsAccepted: TERMS_VERSION, ...s } });
   await settle();
   vi.mocked(paint).mockClear();
 };
@@ -133,9 +142,10 @@ const setSettings = async (s: Partial<Settings>) => {
 const settle = () => new Promise((r) => setTimeout(r, 0));
 
 let replaced: (added: number, removed: number) => void;
-beforeEach(() => {
+beforeEach(async () => {
   fakeBrowser.reset();
   vi.clearAllMocks();
+  await fakeBrowser.storage.local.set({ [SETTINGS_KEY]: { termsAccepted: TERMS_VERSION } });
 
   tabs = {
     get: vi.fn(async (id: number) =>
@@ -184,6 +194,10 @@ describe('main', () => {
     });
     expect(startNavigation).toHaveBeenCalledOnce();
     expect(sendDue).toHaveBeenCalledOnce();
+  });
+
+  it('has auth forget the cached account when a refresh ends the session', () => {
+    expect(onSessionLost).toHaveBeenCalledWith(forgetAccount);
   });
 
   it.each([
@@ -402,6 +416,22 @@ describe('usage:count', () => {
     await settle();
     expect(pruneUsage).toHaveBeenCalledOnce();
     expect(sendDue).toHaveBeenCalledTimes(2);
+  });
+
+  it('refuses sign-in before the Terms in force are accepted', async () => {
+    await fakeBrowser.storage.local.set({ [SETTINGS_KEY]: { termsAccepted: '' } });
+    expect(await dispatch({ type: 'auth:signIn' })).toEqual({
+      ok: false,
+      status: 0,
+      error: 'Accept the Terms first.',
+    });
+    expect(signIn).not.toHaveBeenCalled();
+  });
+
+  it('does not count an app error from an incognito tab', async () => {
+    vi.mocked(urlOverview).mockResolvedValueOnce({ ok: false, status: 503, error: 'down' });
+    await dispatch({ type: 'app:overview', domainId: 'dom_1', url: PAGE, incognito: true });
+    expect(count).not.toHaveBeenCalled();
   });
 
   it('counts failed sign-ins, app errors and failed handlers, not app refusals', async () => {
