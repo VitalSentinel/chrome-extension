@@ -4,7 +4,6 @@ import { OG_TAGS, socialCard, socialFindings, TWITTER_TAGS } from '../../lib/che
 import type { Level, PageSnapshot } from '../../lib/types';
 import { Card, cx, Findings, LEVEL_TEXT, Mark, Page, Section } from '../../ui/kit';
 import type { PageProps } from '../types';
-import { sameHost } from '../../lib/url';
 
 const REQUIRED = new Set(['og:title', 'og:description', 'og:image', 'og:url']);
 const FALLBACK: Record<string, string> = {
@@ -111,8 +110,8 @@ export default function Social({ snap, settings }: PageProps) {
     [snap],
   );
   const resolved = absolute(card.image, snap.url);
-  // Offline mode: no request to another host, so no preview image from a CDN.
-  const blocked = settings.offline && !!resolved && !sameHost(resolved, snap.url);
+  // Offline mode: no preview image, since even one on the page's own host can redirect.
+  const blocked = settings.offline && !!resolved;
   const image = blocked ? '' : resolved;
   const empty = blocked ? 'Not loaded in offline mode' : 'No og:image';
   const host = useMemo(

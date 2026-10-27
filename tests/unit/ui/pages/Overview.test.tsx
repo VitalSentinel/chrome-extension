@@ -141,7 +141,11 @@ describe('a monitored site', () => {
     expect(screen.getByText('Monitored in VitalSentinel · Last 90 days')).toBeTruthy();
     expect(screen.getByText(/Below: CrUX, the last 90 days/)).toBeTruthy();
     expect(await screen.findByText('12k')).toBeTruthy();
-    expect(send).toHaveBeenCalledWith('app:overview', { domainId: 'dom1', url: PAGE_URL });
+    expect(send).toHaveBeenCalledWith('app:overview', {
+      domainId: 'dom1',
+      url: PAGE_URL,
+      incognito: false,
+    });
     expect(screen.queryByRole('status', { name: 'Loading CrUX data' })).toBeNull();
     const cwv = section('Core Web Vitals');
     expect(within(cwv).getByText('1.8 s')).toBeTruthy(); // this load still leads

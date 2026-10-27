@@ -37,7 +37,8 @@ export interface Requests {
   'auth:signOut': { req: object; res: AuthState };
   'auth:state': { req: object; res: AuthState };
   'app:overview': {
-    req: { domainId: string; url: string; refresh?: boolean };
+    // incognito: the page's tab, so a failure there is not counted
+    req: { domainId: string; url: string; refresh?: boolean; incognito?: boolean };
     res: ApiResult<UrlOverview>;
   };
   'app:watch': { req: { domainId: string; url: string }; res: ApiResult<WatchCreated> };

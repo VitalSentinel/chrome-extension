@@ -3,6 +3,7 @@ import { defineBackground } from 'wxt/utils/define-background';
 import { matchDomain } from '../lib/app';
 import type { Message, Requests, TabContext } from '../lib/messages';
 import { SETTINGS_KEY } from '../lib/settings';
+import { TERMS_VERSION } from '../lib/config';
 import type { TabVitals } from '../lib/types';
 import { isUsageEvent } from '../lib/usage';
 import { isWebUrl } from '../lib/url';
@@ -10,6 +11,7 @@ import {
   authState,
   domains,
   forgetAccount,
+  pruneOverviews,
   unwatchPage,
   urlOverview,
   watchPage,
@@ -19,6 +21,7 @@ import { cwvRating, paint } from '../background/badge';
 import { domainRating, pruneDr } from '../background/dr';
 import { jsSetting, listRules, saveRules, setJs, toggleJs } from '../background/javascript';
 import { getNav, startNavigation } from '../background/navigation';
+import { pruneHistory } from '../background/history';
 import { getSession, getSettings, setSession } from '../background/store';
 import { count, pruneUsage, sendDue } from '../background/usage';
 
@@ -90,6 +93,9 @@ type Handlers = {
 const handlers: Handlers = {
   'tab:context': ({ tabId }) => tabContext(tabId),
   'auth:signIn': async () => {
+    // Settings has its own Terms screen; this is the guard behind it.
+    if ((await getSettings()).termsAccepted !== TERMS_VERSION)
+      return { ok: false, status: 0, error: 'Accept the Terms first.' };
     try {
       await signIn();
       await forgetAccount();
@@ -113,9 +119,10 @@ const handlers: Handlers = {
   },
   // Waits for the account and the domain list; Settings and the popup's Try again use it.
   'auth:state': async () => (await Promise.all([authState(), domains()]))[0],
-  'app:overview': async ({ domainId, url, refresh }) => {
+  'app:overview': async ({ domainId, url, refresh, incognito }) => {
     const res = await urlOverview(domainId, url, refresh);
-    if (!res.ok && (res.status === 0 || res.status >= 500)) void count('error.app');
+    // Nothing that happens in an incognito tab is counted.
+    if (!incognito && !res.ok && (res.status === 0 || res.status >= 500)) void count('error.app');
     return res;
   },
   'app:watch': ({ domainId, url }) => watchPage(domainId, url),
@@ -162,6 +169,9 @@ export default defineBackground(() => {
   startNavigation();
   void sendDue();
   void pruneDr();
+  // History and page data go when they expire, not only when the extension is next used.
+  void pruneHistory();
+  void pruneOverviews();
   // Keep storage.local (the refresh token, the Google key) away from content scripts.
   void Promise.resolve()
     .then(() => browser.storage.local.setAccessLevel({ accessLevel: 'TRUSTED_CONTEXTS' }))

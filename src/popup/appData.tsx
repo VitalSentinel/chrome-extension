@@ -54,7 +54,9 @@ export function useAppOverview(ctx: TabContext, url: string, reload = 0) {
   const monitored = ctx.monitored;
   return useAsync(
     () =>
-      monitored ? send('app:overview', { domainId: monitored.id, url }) : Promise.resolve(null),
+      monitored
+        ? send('app:overview', { domainId: monitored.id, url, incognito: ctx.incognito })
+        : Promise.resolve(null),
     [monitored?.id, url, reload],
   );
 }
@@ -62,6 +64,7 @@ export function useAppOverview(ctx: TabContext, url: string, reload = 0) {
 /** A failed API call in plain words, for the popup to show. */
 export function appError(status: number, error: string): string {
   if (error === 'offline') return 'Offline mode is on. Turn it off in Settings to load this.';
+  if (error === 'terms') return 'Accept the Terms to load this.';
   if (error === 'signed_out' || status === 401) return 'Your session ended. Sign in again.';
   if (error === 'network' || status === 0) return 'Could not reach VitalSentinel. Try again.';
   if (status >= 500) return 'VitalSentinel had a problem. Try again in a moment.';

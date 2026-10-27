@@ -13,6 +13,7 @@ import { PROBE_GLOBALS } from '../lib/checks/tech';
 import { OVERLAY_ID } from '../lib/overlay';
 import { collectSnapshot } from '../lib/snapshot';
 import { isPublicHost, sameSite } from '../lib/url';
+import { DIGEST_INDEX, pruneIndex } from '../lib/history';
 import { SETTINGS_KEY, withDefaults, type Settings } from '../lib/settings';
 import type { PageSnapshot } from '../lib/types';
 import type { UsageEvent } from '../lib/usage';
@@ -606,20 +607,4 @@ export async function changesSinceLastVisit(
   });
 }
 
-const DIGEST_INDEX = 'digest-index';
-const DIGEST_MAX = 2000;
-const DIGEST_DAYS = 30;
-
-/** Keeps the newest 2,000 page summaries younger than 30 days; newest first in, as stored. */
-export function pruneIndex(
-  index: [string, number][],
-  now: number,
-): { keep: [string, number][]; drop: string[] } {
-  const keep: [string, number][] = [];
-  const drop: string[] = [];
-  for (const entry of index) {
-    if (keep.length < DIGEST_MAX && now - entry[1] <= DIGEST_DAYS * 86400_000) keep.push(entry);
-    else drop.push(entry[0]);
-  }
-  return { keep, drop };
-}
+export { pruneIndex } from '../lib/history';

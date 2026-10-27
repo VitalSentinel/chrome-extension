@@ -11,11 +11,16 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ### Changed
 
-- The Terms screen asks again for the updated Terms and Privacy Policy.
+- The Terms screen asks again for the updated Terms and Privacy Policy. Settings shows it
+  too, and nothing goes to VitalSentinel, sign-in included, until the Terms are accepted.
+- Offline mode loads no images, since one on the viewed site can redirect to another host.
+- Expired change history and cached VitalSentinel data are deleted when the extension starts,
+  not only when you next use them.
 
 ### Fixed
 
 - Cached account data is now cleared when the session is rejected, as on sign-out.
+- A VitalSentinel error in an incognito tab is no longer counted.
 
 ## [1.0.8] – 2026-10-25
 

@@ -4,7 +4,6 @@ import { bytes, num, capital } from '../../lib/format';
 import type { Level } from '../../lib/types';
 import { Banner, cx, Findings, Page, Pill, Section, Stats, Table, type Column } from '../../ui/kit';
 import type { PageProps } from '../types';
-import { sameHost } from '../../lib/url';
 
 const ISSUES: [id: string, label: string, level: Level][] = [
   ['img.altMissing', 'Missing alt', 'warn'],
@@ -170,11 +169,9 @@ function savingsNote(rows: ImageRow[]): string {
 export default function Images({ snap, settings }: PageProps) {
   const { rows, findings, savings } = useMemo(() => {
     const a = analyseImages(snap.images);
-    // Offline mode: only the page's own site is contacted, so no thumbnails from other hosts.
-    return {
-      ...a,
-      rows: a.rows.map((r) => ({ ...r, thumb: !settings.offline || sameHost(r.src, snap.url) })),
-    };
+    // Offline mode: no thumbnails at all, since an image on the page's own host can redirect
+    // to another one.
+    return { ...a, rows: a.rows.map((r) => ({ ...r, thumb: !settings.offline })) };
   }, [snap, settings.offline]);
   const [filter, setFilter] = useState('all');
 

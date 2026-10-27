@@ -67,6 +67,14 @@ describe('Options', () => {
         .map((a) => a.getAttribute('href')),
     ).toEqual(['#account', '#js', '#icon', '#privacy', '#keys']);
   });
+
+  it('shows the Terms screen instead of the settings until the Terms in force are accepted', async () => {
+    stored = settingsFixture({ termsAccepted: '' });
+    render(<Options />);
+    await screen.findByRole('button', { name: 'Agree and continue' });
+    expect(screen.queryByRole('heading', { level: 1, name: 'Settings' })).toBeNull();
+    expect(screen.queryByRole('button', { name: /sign in/i })).toBeNull();
+  });
 });
 
 describe('JavaScript rules', () => {

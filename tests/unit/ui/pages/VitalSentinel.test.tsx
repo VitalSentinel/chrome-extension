@@ -135,7 +135,11 @@ describe('a monitored site', () => {
     expect(screen.getByText('example.com/blog/core-web-vitals').getAttribute('title')).toBe(
       PAGE_URL,
     );
-    expect(send).toHaveBeenCalledWith('app:overview', { domainId: 'dom1', url: PAGE_URL });
+    expect(send).toHaveBeenCalledWith('app:overview', {
+      domainId: 'dom1',
+      url: PAGE_URL,
+      incognito: false,
+    });
     expect(screen.getByText('Last 90 days')).toBeTruthy();
     expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([
       'Google Search Console',
@@ -250,6 +254,7 @@ describe('a monitored site', () => {
         domainId: 'dom1',
         url: PAGE_URL,
         refresh: true,
+        incognito: false,
       }),
     );
   });
@@ -375,6 +380,7 @@ describe('sections without data', () => {
         domainId: 'dom1',
         url: PAGE_URL,
         refresh: true,
+        incognito: false,
       }),
     );
     expect(screen.getByRole('status', { name: 'Loading your VitalSentinel data' })).toBeTruthy();
