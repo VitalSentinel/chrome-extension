@@ -7,20 +7,17 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.0.9] – 2026-10-27
+
 ### Changed
 
-- The Terms screen asks again for the Terms and Privacy Policy of October 27, 2026, which cover
-  the extension. The Privacy Policy link opens its browser extension section.
-- The usage and error counts switch no longer says "anonymous": the counts carry no identifier,
-  and the privacy notice now says so in those words.
-- The privacy notice says Domain Rating is looked up about once a week per domain (a failed
-  lookup is retried after an hour) and that its rate limits are keyed by a hash of the IP
-  address, not the address itself.
+- The Terms screen asks again for the updated Terms and Privacy Policy.
+- The usage and error counts switch no longer says "anonymous".
+- The privacy notice matches the published Privacy Policy.
 
 ### Fixed
 
-- Your cached name or e-mail, workspaces, roles, domains and page data are now deleted when the
-  VitalSentinel server rejects your session, as they already were on sign-out.
+- Cached account data is now cleared when the session is rejected, as on sign-out.
 
 ## [1.0.8] – 2026-10-25
 
@@ -123,5 +120,6 @@ Initial release. One Manifest V3 build for Chrome and Edge.
 - Performance › Show on page works on every tab, follows scrolling and sticky elements, and
   outlines each shifted element once.
 
-[Unreleased]: https://github.com/VitalSentinel/chrome-extension/compare/v1.0.8...HEAD
+[Unreleased]: https://github.com/VitalSentinel/chrome-extension/compare/v1.0.9...HEAD
+[1.0.9]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.9
 [1.0.8]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.8
