@@ -548,14 +548,14 @@ export function Options() {
               />
             </Row>
             <Row
-              label="Share anonymous usage and error counts"
+              label="Share usage and error counts"
               hint="Once a day, which features you use and how often something fails, so we can fix bugs and improve features. Never the pages you visit."
             >
               <Switch
                 large
                 checked={s.usageStats || s.errorReports}
                 onChange={(v) => set({ usageStats: v, errorReports: v })}
-                label="Share anonymous usage and error counts"
+                label="Share usage and error counts"
               />
             </Row>
           </Card>

@@ -43,7 +43,7 @@ analyser that is injected into the tab only when the popup opens.
 | JavaScript rule and icon state                                                                         | Link status checks (HEAD, 6 at a time)                                                                 |
 | Signed in: monitored-site match (cached domain list)                                                   | VitalSentinel url-overview for monitored sites (90 days of Search Console, index, CrUX, Web Analytics) |
 | Opt-in badge colouring from the on-device Core Web Vitals (no request)                                 | axe-core, the LCP and layout-shift overlay, the resource audit                                         |
-| Anonymous usage and error counters, and the daily report of the days before today                      |                                                                                                        |
+| Usage and error counters (no identifier), and the daily report of the days before today                |                                                                                                        |
 
 ## Parts
 

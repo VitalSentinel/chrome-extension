@@ -30,9 +30,9 @@ export const DOMAINS_TTL_MS = 60 * 60 * 1000;
 export const OVERVIEW_TTL_MS = 60 * 60 * 1000;
 
 /** The Terms and Privacy Policy in force; a new version asks for acceptance again. */
-export const TERMS_VERSION = '2026-10-25';
+export const TERMS_VERSION = '2026-10-27';
 export const TERMS_URL = 'https://www.vitalsentinel.com/terms-and-conditions';
-export const PRIVACY_URL = 'https://www.vitalsentinel.com/privacy-policy';
+export const PRIVACY_URL = 'https://www.vitalsentinel.com/privacy-policy#browser-extension';
 
 export const UTM = 'utm_source=extension&utm_medium=popup';
 

@@ -413,7 +413,7 @@ describe('copy', () => {
 
   it('turns usage statistics and error reports on and off with one switch', async () => {
     await renderOptions();
-    const sw = screen.getByRole('switch', { name: 'Share anonymous usage and error counts' });
+    const sw = screen.getByRole('switch', { name: 'Share usage and error counts' });
     expect(sw.getAttribute('aria-checked')).toBe('false');
     fireEvent.click(sw);
     await waitFor(() =>

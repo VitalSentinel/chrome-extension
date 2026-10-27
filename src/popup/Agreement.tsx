@@ -88,7 +88,7 @@ export function Agreement({
         />
         <Choice
           accent
-          title="Share anonymous usage and error counts"
+          title="Share usage and error counts"
           hint="Once a day, so we can fix bugs and improve features. Never the pages you visit."
           checked={stats}
           onChange={setStats}

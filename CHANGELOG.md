@@ -7,6 +7,16 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Changed
+
+- The Terms screen asks again for the Terms and Privacy Policy of October 27, 2026, which cover
+  the extension. The Privacy Policy link opens its browser extension section.
+- The usage and error counts switch no longer says "anonymous": the counts carry no identifier,
+  and the privacy notice now says so in those words.
+- The privacy notice says Domain Rating is looked up about once a week per domain (a failed
+  lookup is retried after an hour) and that its rate limits are keyed by a hash of the IP
+  address, not the address itself.
+
 ### Fixed
 
 - Your cached name or e-mail, workspaces, roles, domains and page data are now deleted when the
