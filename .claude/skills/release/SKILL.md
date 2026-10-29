@@ -36,6 +36,10 @@ Full process: `docs/RELEASING.md`. This skill covers the local part only.
    Confirm each store zip's manifest (`unzip -p <zip> manifest.json`): no `key`, `version` is
    x.y.z.
 
+   The Chrome Web Store takes only the CRX (verified uploads). If `npm run crx` says it created
+   a new signing key, stop: `.keys/chrome.pem` is missing, and the CRX will be rejected. Restore
+   the key from its backup.
+
 7. **Report** the version, the changelog section, the zip and CRX paths and sizes, and the commands
    still to run. **Stop here.** Committing (`chore(release): x.y.z`), pushing, opening the PR,
    tagging `vx.y.z` and uploading to the stores each need the owner's explicit OK.

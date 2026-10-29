@@ -38,17 +38,26 @@ uploaded without the owner's explicit go-ahead.
    The zips land in `.output/`. `STORE_BUILD=1` drops the development `key`, so the stores
    assign their own IDs. Check each zip's `manifest.json`: no `key`, the right version.
    `npm run crx` packs the Chrome store build into `.output/<name>-<version>-chrome.crx`,
-   signed with `.keys/chrome.pem` (git-ignored; the first run creates it). Keep that key
-   backed up: it fixes the CRX's extension ID, and verified uploads to the Chrome Web Store
-   must always be signed with the same key. The dashboard also takes the zip.
+   signed with `.keys/chrome.pem` (git-ignored; the first run creates it). The Chrome Web Store
+   takes only this CRX (see [Verified CRX uploads](#verified-crx-uploads)).
 
 5. **Commit and tag** (owner's go-ahead): `chore(release): x.y.z` on a release branch, merged
    through a pull request, then tag `vx.y.z` on `main`.
-6. **Upload** the Chrome zip to the Chrome Web Store developer dashboard and the Edge zip to
+6. **Upload** the Chrome CRX to the Chrome Web Store developer dashboard and the Edge zip to
    Partner Center. Update the listing, screenshots and permission justifications if they
    changed (justifications: [PERMISSIONS.md](PERMISSIONS.md#store-justifications)).
 7. **Publish a GitHub release** for the tag with the changelog section as its notes and both
    zips attached.
+
+## Verified CRX uploads
+
+The Chrome Web Store item is opted in to verified CRX uploads: the dashboard accepts only a CRX
+signed with `.keys/chrome.pem`, whose public key is registered there. A plain zip is rejected.
+
+**Back up `.keys/chrome.pem`** outside this machine (a password manager or other secure storage).
+It is git-ignored, so the working copy is the only one. If it is lost, no update can be published
+until Google support resets the key. Never let `npm run crx` create a new key: a CRX signed with
+any other key is rejected.
 
 ## Store IDs and sign-in
 
