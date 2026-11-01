@@ -42,7 +42,7 @@ uploaded without the owner's explicit go-ahead.
    takes only this CRX (see [Verified CRX uploads](#verified-crx-uploads)).
 
 5. **Commit and tag** (owner's go-ahead): `chore(release): x.y.z` on a release branch, merged
-   through a pull request, then tag `vx.y.z` on `main`.
+   through a pull request, then a signed tag `vx.y.z` on `main` (`git tag -s vx.y.z -m x.y.z`).
 6. **Upload** the Chrome CRX to the Chrome Web Store developer dashboard and the Edge zip to
    Partner Center. Update the listing, screenshots and permission justifications if they
    changed (justifications: [PERMISSIONS.md](PERMISSIONS.md#store-justifications)).

@@ -52,10 +52,13 @@ the store uploads stay manual.
 
    ```sh
    git switch main && git pull --ff-only
-   git tag vx.y.z && git push origin vx.y.z
+   git tag -s vx.y.z -m x.y.z && git tag -v vx.y.z && git push origin vx.y.z
    awk '/^## \[x.y.z\]/{f=1;next} /^## \[/{f=0} f' CHANGELOG.md > <scratchpad>/notes.md
-   gh release create vx.y.z --title x.y.z --notes-file <scratchpad>/notes.md \
+   gh release create vx.y.z --verify-tag --title x.y.z --notes-file <scratchpad>/notes.md \
      output/vitalsentinel-extension-x.y.z-chrome.crx \
      output/vitalsentinel-extension-x.y.z-chrome.zip \
      output/vitalsentinel-extension-x.y.z-edge.zip
    ```
+
+   Tags are always signed (`-s`). Stop if `git tag` or `git tag -v` fails: `--verify-tag` makes
+   `gh` refuse a missing tag instead of creating an unsigned one.
