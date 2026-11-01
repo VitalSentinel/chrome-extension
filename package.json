@@ -2,7 +2,7 @@
   "name": "vitalsentinel-extension",
   "description": "VitalSentinel SEO Extension",
   "private": true,
-  "version": "1.0.9",
+  "version": "1.0.10",
   "type": "module",
   "scripts": {
     "dev": "wxt",
