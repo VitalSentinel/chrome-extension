@@ -276,6 +276,20 @@ describe('sign-in window', () => {
     expect(update).toHaveBeenCalledWith(7, { width: 520, height: 760, left: 640, top: 120 });
   });
 
+  it('centres on a window with negative coordinates and rounds to whole pixels', async () => {
+    stubAuthServer();
+    const update = stubWindows(() => create(popup));
+    fakeBrowser.windows.getLastFocused = vi.fn(async () => ({
+      ...anchor,
+      left: -1921,
+      top: -40,
+      width: 1921,
+      height: 901,
+    })) as never;
+    await signIn();
+    expect(update).toHaveBeenCalledWith(7, { width: 520, height: 760, left: -1220, top: 31 });
+  });
+
   it('keeps the window within a window smaller than the compact size', async () => {
     stubAuthServer();
     const update = stubWindows(() => create(popup));
