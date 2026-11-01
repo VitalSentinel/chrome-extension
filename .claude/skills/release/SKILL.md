@@ -1,13 +1,14 @@
 ---
 name: release
-description: "Prepare a release locally – bump the version in package.json, stamp the CHANGELOG Unreleased section with the version and date, and build and zip Chrome and Edge (development and STORE_BUILD=1 store zips) and pack the signed Chrome CRX. Never pushes, tags or uploads without the owner's explicit OK."
+description: "Prepare a release locally – bump the version in package.json, stamp the CHANGELOG Unreleased section with the version and date, and build and zip Chrome and Edge (development and STORE_BUILD=1 store zips) and pack the signed Chrome CRX; after the release PR is merged, tag it and publish the GitHub release with the store builds attached. Never pushes, tags or uploads without the owner's explicit OK."
 when_to_use: 'When asked to "cut a release", "prepare 1.x.y" or "build the store zips".'
 argument-hint: '<major|minor|patch|x.y.z>'
 ---
 
 # /release – prepare a version
 
-Full process: `docs/RELEASING.md`. This skill covers the local part only.
+Full process: `docs/RELEASING.md`. This skill covers the local part and the GitHub release;
+the store uploads stay manual.
 
 ## Steps
 
@@ -43,3 +44,18 @@ Full process: `docs/RELEASING.md`. This skill covers the local part only.
 7. **Report** the version, the changelog section, the zip and CRX paths and sizes, and the commands
    still to run. **Stop here.** Committing (`chore(release): x.y.z`), pushing, opening the PR,
    tagging `vx.y.z` and uploading to the stores each need the owner's explicit OK.
+
+8. **Publish on GitHub** once the release PR is merged and the owner says so. Tag the merge
+   commit on `main` and create the release with the changelog section as notes and the store
+   builds attached (never the `output/dev/` zips). If `main` changed `src/`, `public/` or the
+   config since the build, rebuild (step 6) first.
+
+   ```sh
+   git switch main && git pull --ff-only
+   git tag vx.y.z && git push origin vx.y.z
+   awk '/^## \[x.y.z\]/{f=1;next} /^## \[/{f=0} f' CHANGELOG.md > <scratchpad>/notes.md
+   gh release create vx.y.z --title x.y.z --notes-file <scratchpad>/notes.md \
+     output/vitalsentinel-extension-x.y.z-chrome.crx \
+     output/vitalsentinel-extension-x.y.z-chrome.zip \
+     output/vitalsentinel-extension-x.y.z-edge.zip
+   ```
