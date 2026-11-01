@@ -15,7 +15,7 @@ permissions sparingly and say why in the release notes.
 
 ## Steps
 
-The `/release` Claude Code skill walks through steps 1 to 4. Nothing is pushed, tagged or
+The `/release` Claude Code skill walks through steps 1 to 4, and 5 and 7 on request. Nothing is pushed, tagged or
 uploaded without the owner's explicit go-ahead.
 
 1. **Check the branch.** All changes for the release are merged into `main`, CI is green, and
@@ -35,9 +35,9 @@ uploaded without the owner's explicit go-ahead.
    npm run crx
    ```
 
-   The zips land in `.output/`. `STORE_BUILD=1` drops the development `key`, so the stores
+   The zips land in `output/`. `STORE_BUILD=1` drops the development `key`, so the stores
    assign their own IDs. Check each zip's `manifest.json`: no `key`, the right version.
-   `npm run crx` packs the Chrome store build into `.output/<name>-<version>-chrome.crx`,
+   `npm run crx` packs the Chrome store build into `output/<name>-<version>-chrome.crx`,
    signed with `.keys/chrome.pem` (git-ignored; the first run creates it). The Chrome Web Store
    takes only this CRX (see [Verified CRX uploads](#verified-crx-uploads)).
 
@@ -46,8 +46,10 @@ uploaded without the owner's explicit go-ahead.
 6. **Upload** the Chrome CRX to the Chrome Web Store developer dashboard and the Edge zip to
    Partner Center. Update the listing, screenshots and permission justifications if they
    changed (justifications: [PERMISSIONS.md](PERMISSIONS.md#store-justifications)).
-7. **Publish a GitHub release** for the tag with the changelog section as its notes and both
-   zips attached.
+7. **Publish a GitHub release** for the tag with the changelog section as its notes and the
+   store builds attached: the Chrome CRX, the Chrome zip and the Edge zip (not the
+   `output/dev/` zips). `/release` does this with `gh release create` after the owner's OK.
+   GitHub Packages does not host extension files, so the release is where they are published.
 
 ## Verified CRX uploads
 

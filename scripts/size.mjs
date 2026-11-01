@@ -4,7 +4,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { gzipSync } from 'node:zlib';
 
-const root = process.argv[2] ?? '.output/chrome-mv3';
+const root = process.argv[2] ?? 'output/chrome-mv3';
 const files = [];
 const walk = (dir) => {
   for (const name of readdirSync(dir)) {
