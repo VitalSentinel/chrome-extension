@@ -239,6 +239,132 @@ describe('signIn', () => {
   });
 });
 
+describe('sign-in window', () => {
+  const anchor = { id: 1, type: 'normal', left: 100, top: 50, width: 1600, height: 900 };
+  const popup = { id: 7, type: 'popup' };
+
+  /** Stubs the windows API; `open` runs while the sign-in flow is pending. */
+  function stubWindows(
+    open: () => Promise<unknown>,
+    reply: (authorize: URL) => Record<string, string> | undefined = okReply,
+  ) {
+    const update = vi.fn(async () => ({}));
+    fakeBrowser.windows.getLastFocused = vi.fn(async () => anchor) as never;
+    fakeBrowser.windows.update = update as never;
+    fakeBrowser.identity.getRedirectURL = vi.fn(() => REDIRECT) as never;
+    fakeBrowser.identity.launchWebAuthFlow = vi.fn(async ({ url }: { url: string }) => {
+      await open();
+      const params = reply(new URL(url));
+      return params ? `${REDIRECT}?${new URLSearchParams(params)}` : undefined;
+    }) as never;
+    return update;
+  }
+  const create = (win: object) => fakeBrowser.windows.onCreated.trigger(win as never);
+  const listening = () => fakeBrowser.windows.onCreated.hasListeners();
+
+  afterEach(() => vi.useRealTimers());
+
+  it('resizes the first popup to a compact size centred on the window sign-in started from', async () => {
+    stubAuthServer();
+    const update = stubWindows(async () => {
+      await create({ id: 5, type: 'normal' });
+      await create(popup);
+      await create({ id: 8, type: 'popup' });
+    });
+    await signIn();
+    expect(update).toHaveBeenCalledOnce();
+    expect(update).toHaveBeenCalledWith(7, { width: 520, height: 760, left: 640, top: 120 });
+  });
+
+  it('centres on a window with negative coordinates and rounds to whole pixels', async () => {
+    stubAuthServer();
+    const update = stubWindows(() => create(popup));
+    fakeBrowser.windows.getLastFocused = vi.fn(async () => ({
+      ...anchor,
+      left: -1921,
+      top: -40,
+      width: 1921,
+      height: 901,
+    })) as never;
+    await signIn();
+    expect(update).toHaveBeenCalledWith(7, { width: 520, height: 760, left: -1220, top: 31 });
+  });
+
+  it('keeps the window within a window smaller than the compact size', async () => {
+    stubAuthServer();
+    const update = stubWindows(() => create(popup));
+    fakeBrowser.windows.getLastFocused = vi.fn(async () => ({
+      ...anchor,
+      width: 480,
+      height: 600,
+    })) as never;
+    await signIn();
+    expect(update).toHaveBeenCalledWith(7, { width: 480, height: 600, left: 100, top: 50 });
+  });
+
+  it('ignores windows that are not popups', async () => {
+    stubAuthServer();
+    const update = stubWindows(async () => {
+      await create({ id: 5, type: 'normal' });
+      await create({ id: 6, type: 'devtools' });
+    });
+    await signIn();
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it('still signs in when resizing fails', async () => {
+    stubAuthServer();
+    stubWindows(() => create(popup));
+    fakeBrowser.windows.update = vi.fn(async () => {
+      throw new Error('No window with id: 7.');
+    }) as never;
+    await expect(signIn()).resolves.toBeUndefined();
+  });
+
+  it('stops listening once the flow succeeds', async () => {
+    stubAuthServer();
+    stubWindows(async () => expect(listening()).toBe(true));
+    await signIn();
+    expect(listening()).toBe(false);
+  });
+
+  it('stops listening when the flow is cancelled or fails', async () => {
+    stubAuthServer();
+    const update = stubWindows(
+      async () => {},
+      () => undefined,
+    );
+    await expect(signIn()).rejects.toThrow('Sign-in was cancelled.');
+    expect(listening()).toBe(false);
+
+    fakeBrowser.identity.launchWebAuthFlow = vi.fn(async () => {
+      throw new Error('The user did not approve access.');
+    }) as never;
+    await expect(signIn()).rejects.toThrow('did not approve');
+    expect(listening()).toBe(false);
+
+    await create(popup);
+    expect(update).not.toHaveBeenCalled();
+  });
+
+  it('stops listening after the timeout and no longer resizes a late popup', async () => {
+    vi.useFakeTimers();
+    stubAuthServer();
+    let finish!: () => void;
+    const update = stubWindows(() => new Promise<void>((r) => (finish = r)));
+    const done = signIn();
+    await vi.waitFor(() => expect(listening()).toBe(true));
+
+    await vi.advanceTimersByTimeAsync(15_000);
+    expect(listening()).toBe(false);
+    await create(popup);
+    expect(update).not.toHaveBeenCalled();
+
+    finish();
+    await done;
+  });
+});
+
 describe('accessToken', () => {
   const setAccess = (token: string, msLeft: number) =>
     fakeBrowser.storage.session.set({ 'auth:access': { token, expiresAt: Date.now() + msLeft } });
