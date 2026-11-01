@@ -1,4 +1,4 @@
-# VitalSentinel – SEO Extension
+# VitalSentinel SEO Extension
 
 A Chrome and Edge extension (Manifest V3) that audits the page you are on. Every on-page check
 runs in your browser, without an account. Signing in with a VitalSentinel account adds the

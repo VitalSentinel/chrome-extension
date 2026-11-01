@@ -1,6 +1,6 @@
 # Privacy
 
-This document describes what the VitalSentinel – SEO Extension stores in your browser and what
+This document describes what the VitalSentinel SEO Extension stores in your browser and what
 it sends, to whom and when. It covers version 1.x. If a change to the extension alters
 anything below, this document changes in the same release and the change is listed in the
 [CHANGELOG](CHANGELOG.md).

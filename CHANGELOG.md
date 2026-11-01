@@ -7,6 +7,10 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Changed
+
+- The extension is now named "VitalSentinel SEO Extension", without the dash.
+
 ## [1.0.9] – 2026-10-27
 
 ### Changed

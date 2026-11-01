@@ -1,6 +1,6 @@
 {
   "name": "vitalsentinel-extension",
-  "description": "VitalSentinel – SEO Extension",
+  "description": "VitalSentinel SEO Extension",
   "private": true,
   "version": "1.0.9",
   "type": "module",

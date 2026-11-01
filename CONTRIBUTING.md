@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve the VitalSentinel – SEO Extension. This document explains how to
+Thanks for helping improve the VitalSentinel SEO Extension. This document explains how to
 report problems and propose changes.
 
 By taking part you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
