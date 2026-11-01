@@ -10,6 +10,8 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 ### Changed
 
 - The extension is now named "VitalSentinel SEO Extension", without the dash.
+- The sign-in window opens compact (about 520 x 760) and centred on your browser window instead
+  of nearly full screen.
 
 ## [1.0.9] – 2026-10-27
 

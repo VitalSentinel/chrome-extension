@@ -109,7 +109,11 @@ extension beyond the client side of that flow.
    `chrome.identity.launchWebAuthFlow` on the app's `/oauth/authorize` with the client ID,
    `redirect_uri = https://<extension-id>.chromiumapp.org/`, the resource, the scopes and the
    challenge.
-2. The user logs in on the app's consent page and approves the scopes.
+2. The user logs in on the app's consent page and approves the scopes. `launchWebAuthFlow` has
+   no size option and Chrome opens its popup window large, so the worker watches
+   `windows.onCreated` while the flow runs and resizes the first `popup` window to about 520 x 760,
+   centred on the window sign-in started from. The windows API needs no permission; the watch ends
+   on the first match, after 15 seconds, or when the flow settles.
 3. Chrome captures the redirect. The worker checks `state` and exchanges the code at
    `POST /oauth/token` with the verifier.
 4. The access token (JWT, 60 minutes) goes to `chrome.storage.session`; the refresh token

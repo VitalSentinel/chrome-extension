@@ -1,4 +1,4 @@
-import { browser } from 'wxt/browser';
+import { browser, type Browser } from 'wxt/browser';
 import { API_PREFIX, API_URL, OAUTH_CLIENT_ID, OAUTH_RESOURCE, OAUTH_SCOPES } from '../lib/config';
 import { getLocal, getSession, setLocal, setSession, getSettings } from './store';
 
@@ -38,6 +38,10 @@ export class AuthError extends Error {
 }
 
 const TIMEOUT = 15_000;
+
+// launchWebAuthFlow has no size option and Chrome opens its popup window large. The window
+// is created once the first page has loaded, so it is resized when it appears.
+const SIGN_IN_WINDOW = { width: 520, height: 760 };
 
 const b64url = (bytes: Uint8Array) =>
   btoa(String.fromCharCode(...bytes))
@@ -116,6 +120,36 @@ export async function isSignedIn(): Promise<boolean> {
   return !!(await getLocal<string>(REFRESH)) || !!(await getSession<AccessToken>(ACCESS));
 }
 
+/**
+ * Shrinks the first popup window that appears (the sign-in window) to a compact size centred
+ * on the window sign-in started from. The windows API needs no permission. Returns a function
+ * that stops watching; it also stops by itself on the first match or after TIMEOUT.
+ */
+async function compactSignInWindow(): Promise<() => void> {
+  // The sign-in window takes focus when it opens, so the window to centre on is read first.
+  const anchor = await browser.windows.getLastFocused().catch(() => undefined);
+  const stop = () => {
+    clearTimeout(timer);
+    browser.windows.onCreated.removeListener(onCreated);
+  };
+  const onCreated = (win: Browser.windows.Window) => {
+    if (win.type !== 'popup' || win.id === undefined) return;
+    stop();
+    const width = Math.min(SIGN_IN_WINDOW.width, anchor?.width ?? Infinity);
+    const height = Math.min(SIGN_IN_WINDOW.height, anchor?.height ?? Infinity);
+    const bounds: Browser.windows.UpdateInfo = { width, height };
+    if (anchor?.left !== undefined && anchor.top !== undefined) {
+      bounds.left = anchor.left + Math.round(((anchor.width ?? width) - width) / 2);
+      bounds.top = anchor.top + Math.round(((anchor.height ?? height) - height) / 2);
+    }
+    // Only cosmetic: the flow works in the large window too.
+    void browser.windows.update(win.id, bounds).catch(() => {});
+  };
+  const timer = setTimeout(stop, TIMEOUT);
+  browser.windows.onCreated.addListener(onCreated);
+  return stop;
+}
+
 export async function signIn(): Promise<void> {
   if ((await getSettings()).offline)
     throw new AuthError('Offline mode is on. Turn it off in Settings to sign in.');
@@ -135,7 +169,10 @@ export async function signIn(): Promise<void> {
     resource: OAUTH_RESOURCE,
   }).toString();
 
-  const result = await browser.identity.launchWebAuthFlow({ url: url.href, interactive: true });
+  const stopWatching = await compactSignInWindow();
+  const result = await browser.identity
+    .launchWebAuthFlow({ url: url.href, interactive: true })
+    .finally(stopWatching);
   if (!result) throw new AuthError('Sign-in was cancelled.');
   const back = new URL(result).searchParams;
   if (back.get('error')) throw new AuthError(back.get('error_description') || back.get('error')!);
