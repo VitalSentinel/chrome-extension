@@ -96,8 +96,8 @@ Offline mode turns off every request except those to the site itself. Full detai
 
 ```sh
 npm ci
-npm run build          # Chrome: .output/chrome-mv3
-npm run build:edge     # Edge:   .output/edge-mv3
+npm run build          # Chrome: output/chrome-mv3
+npm run build:edge     # Edge:   output/edge-mv3
 ```
 
 Open `chrome://extensions` (or `edge://extensions`), turn on Developer mode, choose **Load

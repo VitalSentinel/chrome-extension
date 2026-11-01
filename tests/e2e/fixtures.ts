@@ -4,7 +4,7 @@ import { ORIGIN, startSite } from './server';
 
 // Loads the unpacked build (npm run build) into Chromium. The manifest key pins the ID.
 export const EXTENSION_ID = 'ppnfgofoagpedmdbggnmlfomgnhjljal';
-const BUILD = resolve(import.meta.dirname, '../../.output/chrome-mv3');
+const BUILD = resolve(import.meta.dirname, '../../output/chrome-mv3');
 
 export const test = base.extend<
   { context: BrowserContext; popup: (url: string) => Promise<{ site: Page; popup: Page }> },

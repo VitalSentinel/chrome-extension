@@ -28,7 +28,7 @@ Full process: `docs/RELEASING.md`. This skill covers the local part only.
 
    ```sh
    npm run zip && npm run zip -- -b edge                         # development key, local testing
-   mkdir -p .output/dev && mv .output/*.zip .output/dev/         # same file names as the store zips
+   mkdir -p output/dev && mv output/*.zip output/dev/           # same file names as the store zips
    STORE_BUILD=1 npm run zip && STORE_BUILD=1 npm run zip -- -b edge   # store uploads
    npm run crx                                                   # signed CRX of the Chrome store build
    ```

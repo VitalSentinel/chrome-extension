@@ -35,9 +35,9 @@ uploaded without the owner's explicit go-ahead.
    npm run crx
    ```
 
-   The zips land in `.output/`. `STORE_BUILD=1` drops the development `key`, so the stores
+   The zips land in `output/`. `STORE_BUILD=1` drops the development `key`, so the stores
    assign their own IDs. Check each zip's `manifest.json`: no `key`, the right version.
-   `npm run crx` packs the Chrome store build into `.output/<name>-<version>-chrome.crx`,
+   `npm run crx` packs the Chrome store build into `output/<name>-<version>-chrome.crx`,
    signed with `.keys/chrome.pem` (git-ignored; the first run creates it). The Chrome Web Store
    takes only this CRX (see [Verified CRX uploads](#verified-crx-uploads)).
 

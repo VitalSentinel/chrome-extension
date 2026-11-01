@@ -8,6 +8,7 @@ const DEV_KEY =
 
 export default defineConfig({
   srcDir: 'src',
+  outDir: 'output',
   publicDir: 'public',
   imports: false,
   manifestVersion: 3,

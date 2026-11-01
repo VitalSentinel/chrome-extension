@@ -21,8 +21,8 @@ npm run dev     # opens a Chrome profile with the extension loaded and hot reloa
 | -------------------- | ------------------------------------------------------------------ |
 | `npm run dev`        | Development build for Chrome with hot reload                       |
 | `npm run dev:edge`   | Development build for Edge                                         |
-| `npm run build`      | Production build for Chrome into `.output/chrome-mv3`              |
-| `npm run build:edge` | Production build for Edge into `.output/edge-mv3`                  |
+| `npm run build`      | Production build for Chrome into `output/chrome-mv3`               |
+| `npm run build:edge` | Production build for Edge into `output/edge-mv3`                   |
 | `npm run zip`        | Build and zip for upload (add `-- -b edge` for Edge)               |
 | `npm run crx`        | Pack the Chrome store build into a signed CRX (see RELEASING.md)   |
 | `npm run typecheck`  | `tsc --noEmit`                                                     |
@@ -92,7 +92,7 @@ Add-ons assign their own IDs, and those are registered as separate redirect URIs
 navigation record and assert on the result. Every check module comes with tests.
 
 **End-to-end tests** (`tests/e2e`, Playwright). `npm run test:e2e` builds the extension and
-loads `.output/chrome-mv3` into Chromium. The fixture switches Domain Rating off and accepts
+loads `output/chrome-mv3` into Chromium. The fixture switches Domain Rating off and accepts
 the Terms in the popup first, as a user would, so no test calls the app. `a11y.spec.ts` runs axe-core (WCAG 2.1 A and AA) on every popup page,
 Settings and the Terms screen, in light and dark mode; a new page goes into
 `tests/e2e/pages.ts` so both suites cover it. Extensions need a headed browser, so on Linux run
