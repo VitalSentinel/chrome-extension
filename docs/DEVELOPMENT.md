@@ -116,7 +116,8 @@ npm run build
 npm run test:e2e
 ```
 
-CI (`.github/workflows/ci.yml`) runs the same commands.
+CI (`.github/workflows/ci.yml`) runs the same commands on pushes to `main` and on pull requests
+once they are ready for review; draft pull requests skip it.
 
 ## Debugging
 
