@@ -168,6 +168,11 @@ const MODULES: [string, string, string][] = [
     'M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0',
   ],
   [
+    'Form monitoring',
+    'Know when a key form stops bringing leads',
+    'M9 2h6a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zM16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M12 11h4M12 16h4M8 11h.01M8 16h.01',
+  ],
+  [
     'Google Search Console',
     'Search performance, unified',
     'm21 21-4.34-4.34M3 11a8 8 0 1 0 16 0a8 8 0 1 0 -16 0',
@@ -279,7 +284,7 @@ function Modules() {
         <h2 id="vs-modules" class="flex-grow font-display text-[16px] font-bold">
           Everything VitalSentinel monitors
         </h2>
-        <span class="text-xs text-ink-2">12 modules · All in the free plan</span>
+        <span class="text-xs text-ink-2">13 modules · All in the free plan</span>
       </div>
       <ul class="grid grid-cols-3 gap-2.5">
         {MODULES.map(([name, what, icon]) => (
@@ -339,10 +344,10 @@ export function SignInPitch({ ctx, reload }: { ctx: TabContext; reload: () => vo
         title={
           <>
             <span class="block">Your site breaks quietly.</span>
-            <span class="block text-accent-on/80">We make sure you hear it.</span>
+            <span class="block text-accent-on/80">Hear it first.</span>
           </>
         }
-        text="All-in-one website monitoring that watches every signal and alerts you in minutes, before a problem hits your revenue – free for one domain."
+        text="SEO and website monitoring for Google and AI search. What changed and what to fix first: noindex, Core Web Vitals, indexing, AI crawlers. Free for 1 domain."
       >
         {startLink(host, 'Start monitoring free')}
         <button

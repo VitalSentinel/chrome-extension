@@ -86,7 +86,7 @@ test('signed out, the VitalSentinel tab offers sign-in and the free plan', async
   const { popup: p } = await popup(`${ORIGIN}/page.html`);
   await p.getByRole('button', { name: /^VitalSentinel/ }).click();
   await expect(p.getByRole('button', { name: 'Sign in with VitalSentinel' })).toBeVisible();
-  await expect(p.getByText(/free for one domain/)).toBeVisible();
+  await expect(p.getByText(/Free for 1 domain/)).toBeVisible();
 });
 
 test('settings page saves a JavaScript rule', async ({ context }) => {

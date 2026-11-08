@@ -7,6 +7,15 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+## [1.0.11] – 2026-11-08
+
+### Changed
+
+- The VitalSentinel tab says what the product does in its current words: SEO and website
+  monitoring for Google and AI search, what changed and what to fix first. The headline reads
+  "Your site breaks quietly. Hear it first."
+- The module list shows all 13 modules, Form Monitoring included.
+
 ## [1.0.10] – 2026-11-01
 
 ### Changed
@@ -134,7 +143,8 @@ Initial release. One Manifest V3 build for Chrome and Edge.
 - Performance › Show on page works on every tab, follows scrolling and sticky elements, and
   outlines each shifted element once.
 
-[Unreleased]: https://github.com/VitalSentinel/chrome-extension/compare/v1.0.10...HEAD
+[Unreleased]: https://github.com/VitalSentinel/chrome-extension/compare/v1.0.11...HEAD
+[1.0.11]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.11
 [1.0.10]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.10
 [1.0.9]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.9
 [1.0.8]: https://github.com/VitalSentinel/chrome-extension/releases/tag/v1.0.8

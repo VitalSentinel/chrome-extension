@@ -57,12 +57,12 @@ describe('SignInPitch', () => {
   it('leads with the free plan and every module in the app sidebar order', () => {
     render(<SignInPitch ctx={tabContext()} reload={vi.fn()} />);
     expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(
-      'Your site breaks quietly.We make sure you hear it.',
+      'Your site breaks quietly.Hear it first.',
     );
-    expect(screen.getByText(/free for one domain/)).toBeTruthy();
+    expect(screen.getByText(/Free for 1 domain/)).toBeTruthy();
     expect(offer()).toEqual(['Every module included', 'No credit card', 'Live in under 5 minutes']);
     const names = modules();
-    expect(names).toHaveLength(12);
+    expect(names).toHaveLength(13);
     expect(names[0]).toBe('Site health monitoringA technical SEO crawl that never stops');
     expect(names.at(-1)).toBe('Synthetic monitoringScheduled Lighthouse audits');
     expect(href('Start monitoring free')).toBe(addDomainUrl('example.com'));
