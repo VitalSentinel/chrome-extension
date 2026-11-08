@@ -7,6 +7,12 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Changed
+
+- The VitalSentinel tab says what the product does in its current words: SEO and website
+  monitoring that tells you what changed and what to fix first.
+- The module list shows all 13 modules, Form Monitoring included.
+
 ## [1.0.10] – 2026-11-01
 
 ### Changed
