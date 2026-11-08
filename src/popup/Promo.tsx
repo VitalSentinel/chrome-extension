@@ -344,10 +344,10 @@ export function SignInPitch({ ctx, reload }: { ctx: TabContext; reload: () => vo
         title={
           <>
             <span class="block">Your site breaks quietly.</span>
-            <span class="block text-accent-on/80">We make sure you hear it.</span>
+            <span class="block text-accent-on/80">Hear it first.</span>
           </>
         }
-        text="SEO and website monitoring that tells you what changed – noindex, indexing, Google and AI crawlers, Core Web Vitals – and what to fix first. Free for 1 domain."
+        text="SEO and website monitoring for Google and AI search. What changed and what to fix first: noindex, Core Web Vitals, indexing, AI crawlers. Free for 1 domain."
       >
         {startLink(host, 'Start monitoring free')}
         <button
