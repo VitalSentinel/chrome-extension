@@ -103,7 +103,7 @@ describe('signed out or not monitored', () => {
     renderPage(VitalSentinel, { page: 'vs-all' });
     expect(screen.getByRole('button', { name: 'Sign in with VitalSentinel' })).toBeTruthy();
     expect(screen.getByRole('link', { name: 'Start monitoring free' })).toBeTruthy();
-    expect(screen.getByText(/free for one domain/)).toBeTruthy();
+    expect(screen.getByText(/Free for 1 domain/)).toBeTruthy();
     expect(send).not.toHaveBeenCalled();
   });
 
