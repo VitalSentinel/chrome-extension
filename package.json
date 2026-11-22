@@ -24,7 +24,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "axe-core": "4.14.0",
+    "axe-core": "4.14.1",
     "preact": "11.0.2",
     "web-vitals": "6.2.3"
   },
