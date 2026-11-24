@@ -46,4 +46,12 @@ export default defineConfig({
     oxc: { jsx: { runtime: 'automatic' as const, importSource: 'preact' } },
     build: { target: 'chrome120', modulePreload: false, reportCompressedSize: false },
   }),
+  hooks: {
+    // axe.js ships unminified: minifying axe-core's bundled core-js polyfills renamed their
+    // constants into code the Chrome Web Store flagged as obfuscated (Code Readability).
+    'vite:build:extendConfig': (entrypoints, config) => {
+      if (entrypoints.some((e) => e.name === 'axe'))
+        config.build = { ...config.build, minify: false };
+    },
+  },
 });
