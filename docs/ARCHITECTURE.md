@@ -165,6 +165,9 @@ constraint rather than an afterthought:
 - Preact instead of React, and hand-written types instead of a runtime schema library.
 - Report pages load lazily; axe-core (the largest dependency) is injected only when the
   Accessibility report opens.
+- `axe.js` ships unminified (`wxt.config.ts`): minified, axe-core's bundled core-js polyfills
+  read as obfuscated code to the Chrome Web Store review (Code Readability policy). Every other
+  entry point is minified.
 - `npm run size` reports the size of each built entry point.
 
 ## Configuration

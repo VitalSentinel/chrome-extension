@@ -24,25 +24,25 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "axe-core": "4.14.0",
-    "preact": "11.0.2",
+    "axe-core": "4.14.1",
+    "preact": "11.2.0",
     "web-vitals": "6.2.3"
   },
   "devDependencies": {
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.1",
     "@resvg/resvg-js": "^2.6.2",
     "@testing-library/preact": "3.2.6",
-    "@types/node": "26.6.5",
-    "@vitest/coverage-v8": "5.0.5",
-    "autoprefixer": "10.6.1",
+    "@types/node": "26.6.6",
+    "@vitest/coverage-v8": "5.1.1",
+    "autoprefixer": "10.7.0",
     "happy-dom": "21.0.4",
-    "oxlint": "1.89.0",
-    "postcss": "8.5.31",
-    "prettier": "3.9.10",
+    "oxlint": "1.95.0",
+    "postcss": "8.5.33",
+    "prettier": "3.10.1",
     "tailwindcss": "3.4.19",
     "typescript": "7.0.2",
-    "vitest": "5.0.5",
-    "wxt": "0.21.4"
+    "vitest": "5.1.1",
+    "wxt": "0.21.5"
   },
   "engines": {
     "node": ">=22"
