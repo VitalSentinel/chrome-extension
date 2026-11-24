@@ -68,11 +68,11 @@ export default function Links({ snap, settings }: PageProps) {
 
   // Results arrive one by one; apply them once per frame so a long list re-renders rarely.
   const pending = useRef(new Map<string, number>());
-  const frame = useRef(0);
+  const frameRef = useRef(0);
   const onResult = (url: string, code: number) => {
     pending.current.set(url, code);
-    frame.current ||= requestAnimationFrame(() => {
-      frame.current = 0;
+    frameRef.current ||= requestAnimationFrame(() => {
+      frameRef.current = 0;
       const batch = Object.fromEntries(pending.current);
       pending.current.clear();
       setStatus((s) => ({ ...s, ...batch }));

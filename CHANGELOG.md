@@ -7,6 +7,17 @@ project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.ht
 
 ## [Unreleased]
 
+### Changed
+
+- The accessibility checker (axe-core) ships as readable, unminified code to meet the Chrome
+  Web Store code readability policy.
+- Updated axe-core to 4.14.1 and Preact to 11.2.0, plus the build and test tools.
+
+### Security
+
+- Updated the build tooling's `minimatch` to 11.0.9 (denial of service via glob patterns,
+  development only; nothing in the shipped extension).
+
 ## [1.0.11] – 2026-11-08
 
 ### Changed

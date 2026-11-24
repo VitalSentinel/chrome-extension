@@ -118,9 +118,9 @@ export function App() {
 
   // `first` also reopens the page last open for this tab and URL, in the same render. Only the
   // newest reload sets the context: storage changes can start several close together.
-  const reloads = useRef(0);
+  const reloadsRef = useRef(0);
   const reload = async (first = false) => {
-    const seq = ++reloads.current;
+    const seq = ++reloadsRef.current;
     try {
       const tabId = await currentTabId();
       const key = lastPageKey(tabId);
@@ -130,7 +130,7 @@ export function App() {
         first ? browser.storage.session.get(key) : null,
       ]);
       if (saved) setPage(restorePage(saved[key] as LastPage | undefined, c.url, c.auth.signedIn));
-      if (seq !== reloads.current) return c;
+      if (seq !== reloadsRef.current) return c;
       setCtx(c);
       setSettings(s);
       return c;
